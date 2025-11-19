@@ -31,7 +31,7 @@
 	<!-- "SEE_INVISIBILITY_REVEAL" --> <content contentuid="h0f1395ebg634ag4301gbca5gecbc01bf2d97" version="1">This &lt;LSTag Type="Status" Tooltip="INVISIBLE"&gt;Invisibile&lt;/LSTag&gt; entity's location is being revealed due to the effects of &lt;LSTag Type="Spell" Tooltip="Shout_SeeInvisibility"&gt;See Invisibility&lt;/LSTag&gt;. It retains the effects from being Invisible against those who cannot see it.</content>
 	<!-- "Shout_SeeInvisibility_Seek" --> <content contentuid="ha06ae06dg1c88g43abgb807ga9f61ecca2b5" version="1">Search for nearby &lt;LSTag Type="Status" Tooltip="INVISIBLE"&gt;Invisible&lt;/LSTag&gt; creatures.</content>
 	<!-- "SEE_INVISIBILITY_SEEK" --> <content contentuid="h2a6ec662gd025g40f4g8f6cg16cc8f609c7a" version="1">Searching for nearby &lt;LSTag Type="Status" Tooltip="INVISIBLE"&gt;Invisible&lt;/LSTag&gt; creatures.</content>
-	<!-- "Target_Invisibility_Greater" --> <content contentuid="h139898d5ge7adg4db0g871bg606b7ca02744" version="1">Invisibility breaks on losing concentration. If you attack or cast a spell, enemies will notice you and begin to seek you out.</content>
+	<!-- "GREATER_INVISIBILITY" --> <content contentuid="h5a74ab78g6e2bg48ccga35bg544f21e9fb63" version="1">Entity has &lt;LSTag Tooltip="Advantage"&gt;Advantage&lt;/LSTag&gt; on &lt;LSTag Tooltip="AttackRoll"&gt;Attack Roll&lt;/LSTag&gt;Attack Rolls&lt;/LSTag&gt;. Attack Rolls against it have &lt;LSTag Tooltip="Disadvantage"&gt;Disadvantage&lt;/LSTag&gt;.</content>
 
 	<!-- "" --> <content contentuid="" version="1"></content>
 	<!-- "" --> <content contentuid="" version="1"></content>

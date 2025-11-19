@@ -206,6 +206,7 @@ data "RemoveConditions" "(IsStatusEvent(StatusEvent.OnSpellCast) and not HasSpel
 data "OnRemoveFunctors" "IF(RemoveCause(StatusRemoveCause.External) and IsConcentrating(context.Source) and not HasStatus('SEE_INVISIBILITY_REVEAL')):ApplyStatus(INVISIBILITY,100,Target.GOON_INVISIBILITY_SEEN.Duration,,,,,true)"
 
 // ==================================== Greater Invisibility
+// Natively compatible with Sailor's changes in Arcane Recovery - Spell Balance Intent and Flavor.
 
 new entry "Target_Invisibility_Greater"
 type "SpellData"
@@ -223,8 +224,7 @@ using "Target_Invisibility_Greater"
 // data "Description" "h886bd784gbaefg45a8gb6e3ga9b04b7e07fd;5"
 // Invisibility breaks when you fail increasingly harder Stealth &lt;LSTag Tooltip="AbilityCheck"&gt;Checks&lt;/LSTag&gt; on attacking, casting spells or interacting with items.
 // data "ExtraDescription" "h7aa27b7ag259bg4394g97a7g5fd5100be99b;1"
-// Invisibility breaks on losing concentration. If you attack or cast a spell, enemies will notice you and begin to seek you out.
-data "ExtraDescription" "h139898d5ge7adg4db0g871bg606b7ca02744;1"
+data "ExtraDescription" ""
 // data "TooltipStatusApply" "ApplyStatus(GREATER_INVISIBILITY,100,10)"
 // data "TooltipUpcastDescription" "6ff1780a-855a-414c-a8bf-811251537206"
 // data "CastSound" "Spell_Cast_Utility_GreaterInvisibility_L1to3"
@@ -242,7 +242,6 @@ data "ExtraDescription" "h139898d5ge7adg4db0g871bg606b7ca02744;1"
 // data "CastEffect" "4f8e353e-c04e-45c3-880b-d10885fd091f"
 // data "TargetEffect" "aab47e6c-59a5-44c4-830d-15fdde7348b8"
 
-// TODO: Actual description for functionality
 new entry "GREATER_INVISIBILITY"
 type "StatusData"
 data "StatusType" "INVISIBLE"
@@ -252,10 +251,12 @@ using "GREATER_INVISIBILITY"
 // data "DisplayName" "h17d32d34g187eg46b1g938fg20d567df6eb4;2"
 // Entity has &lt;LSTag Tooltip="Advantage"&gt;Advantage&lt;/LSTag&gt; on &lt;LSTag Tooltip="AttackRoll"&gt;Attack Rolls&lt;/LSTag&gt;. Attack Rolls against it have &lt;LSTag Tooltip="Disadvantage"&gt;Disadvantage&lt;/LSTag&gt;. &lt;br&gt;&lt;br&gt;When interacting with items, casting spells or attacking, the entity needs to succeed a Stealth &lt;LSTag Tooltip="AbilityCheck"&gt;Check&lt;/LSTag&gt; to maintain Invisibility. The check becomes harder with each successful attempt.
 // data "Description" "ha4468dd2gdefeg4a52ga0c7g91ae57aef8a3;5"
+// Entity has &lt;LSTag Tooltip="Advantage"&gt;Advantage&lt;/LSTag&gt; on &lt;LSTag Tooltip="AttackRoll"&gt;Attack Roll&lt;/LSTag&gt;Attack Rolls&lt;/LSTag&gt;. Attack Rolls against it have &lt;LSTag Tooltip="Disadvantage"&gt;Disadvantage&lt;/LSTag&gt;.
+data "Description" "h5a74ab78g6e2bg48ccga35bg544f21e9fb63;1"
 // data "Icon" "Spell_Illusion_GreaterInvisibility"
 // data "StackPriority" "5"
 // data "OnApplyFunctors" "ApplyStatus(GREATER_INVISIBILITY_TRACKER,100,-1)"
-data "OnApplyFunctors" ""
+data "OnApplyFunctors" "ApplyStatus(SAILOR_GREATERINVIS_FUNCTORS_AR,100,-1)"
 // data "StatusPropertyFlags" "UnavailableInActiveRoll;ExcludeFromPortraitRendering"
 // data "RemoveEvents" "OnSpellCast;OnEntityPickUp;OnEntityDrop;OnEntityDrag;OnLockpickingFinished;OnDisarmingFinished"
 data "RemoveEvents" ""

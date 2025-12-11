@@ -1,4 +1,4 @@
-// ==================================== (See) Invisibility Rework by drkekyll ====================================
+// ==================================== Changes inspired by and originally based off (See) Invisibility Rework by drkekyll ====================================
 // Bug Fix: Invisible entities no longer have advantage against targets with Blindsight, or other means of seeing through Invisibility.
 // Note: Thanks to the frequently used inheritence of "INVISIBLE" not many "Boosts" fields warrant overwriting
 
@@ -82,13 +82,75 @@ data "OnRemoveFunctors" "IF(Goon_IsInvisibleSeen() and not HasStatus('SEE_INVISI
 data "StatusEffect" "d26436d4-d019-4dfc-b2f1-da0ac195575f"
 
 // ==================================== Truesight ====================================
-// TODO: wot
+// Changes: won't reveal allied characters.
+
+// ==================================== Truesight - 5e Spells
+
+// new entry "TRUEFORM_REVEAL"
+// type "StatusData"
+// data "StatusType" "BOOST"
+// data "StackId" "TRUEFORM_REVEAL"
+// data "StatusPropertyFlags" "DisableOverhead;DisablePortraitIndicator;DisableCombatlog"
+// data "StatusEffect" "ca0b3ab3-dac0-47f7-b313-7ca69c85b5b4"
+
+// new entry "TRUESIGHT"
+// type "StatusData"
+// data "StatusType" "BOOST"
+// using "SEE_INVISIBILITY"
+// data "DisplayName" "h47736fecg4c86g4fcbga2a1g65c99d048721;1"
+// data "Description" "h2c7b44a4gc2fcg4dbegb4b7g77097a0d43d9;1"
+// data "Icon" "Spell_Divination_TrueSeeing"
+// data "StackId" "TRUESIGHT"
+// data "AuraRadius" "36"
+// data "Boosts" "DarkvisionRangeMin(36);ActiveCharacterLight(c46e7ba8-e746-7020-5146-287474d7b9f7);StatusImmunity(BLINDED_DARKNESS);IgnoreSurfaceCover(SurfaceDarknessCloud);UnlockInterrupt(Interrupt_Truesight)"
+// data "OnApplyFunctors" "ApplyStatus(TRUESIGHT_SEE_TRUEFORM, 100, 600)"
+// data "OnRemoveFunctors" "RemoveStatus(TRUESIGHT_SEE_TRUEFORM)"
+// data "StatusGroups" "SG_RemoveOnRespec"
+// data "ApplyEffect" "bc884964-24a8-407f-8099-6d2747b1a734"
+// data "StatusEffect" "58f32bba-fd27-4aea-852b-9de6721a59d5"
 
 new entry "TRUESIGHT_SEE_TRUEFORM"
 type "StatusData"
 data "StatusType" "BOOST"
 using "TRUESIGHT_SEE_TRUEFORM"
-data "AuraStatuses" "TARGET:IF(not HasAnyStatus({'SG_Unconscious','SG_Incapacitated','SG_Blinded'},{},{},context.Source) and not Ally() and IsInSightPyramid(context.Source,context.TargetPosition) and HasStatus('SG_Polymorph')):ApplyStatus(TRUEFORM_REVEAL)"
+// data "StackId" "TRUESIGHT_SEE_TRUEFORM"
+// data "AuraRadius" "36"
+// data "AuraStatuses" "TARGET:IF(not HasAnyStatus({'SG_Unconscious','SG_Incapacitated','SG_Blinded'},{},{},context.Source) and HasStatus('SG_Polymorph') and FacingMe(context.Source,context.Target)):ApplyStatus(TRUEFORM_REVEAL,100,1)"
+data "AuraStatuses" "TARGET:IF(not HasAnyStatus({'SG_Unconscious','SG_Incapacitated','SG_Blinded'},{},{},context.Source) and HasStatus('SG_Polymorph') and IsInSightPyramid(context.Source,context.TargetPosition) and not Ally()):ApplyStatus(TRUEFORM_REVEAL,100,1)"
+// data "AuraFlags" "CanAffectInvisibleItems;AIIgnoreOnSelf;ShouldCheckLOS"
+// data "StatusGroups" "SG_RemoveOnRespec"
+// data "StatusPropertyFlags" "DisableOverhead;DisablePortraitIndicator;DisableCombatlog"
+
+// ==================================== Truesight - Expansion
+
+// new entry "BOON_OF_TRUESIGHT"
+// type "StatusData"
+// data "StatusType" "BOOST"
+// using "SEE_INVISIBILITY"
+// data "DisplayName" "h47736fecg4c86g4fcbga2a1g65c99d048721;1"
+// data "Description" "h2c7b44a4gc2fcg4dbegb4b7g77097a0d43d9;1"
+// data "Icon" "Spell_Divination_TrueSeeing"
+// data "StackId" "BOON_OF_TRUESIGHT"
+// data "AuraRadius" "18"
+// data "Boosts" "DarkvisionRangeMin(18);ActiveCharacterLight(c46e7ba8-e746-7020-5146-287474d7b9f7);StatusImmunity(BLINDED_DARKNESS);IgnoreSurfaceCover(SurfaceDarknessCloud);UnlockInterrupt(Interrupt_Truesight)"
+// data "OnApplyFunctors" "ApplyStatus(BOON_OF_TRUESIGHT_SEE_TRUEFORM, 100, -1)"
+// data "OnRemoveFunctors" "RemoveStatus(BOON_OF_TRUESIGHT_SEE_TRUEFORM)"
+// data "StatusGroups" "SG_RemoveOnRespec"
+// data "ApplyEffect" "bc884964-24a8-407f-8099-6d2747b1a734"
+// data "StatusEffect" "58f32bba-fd27-4aea-852b-9de6721a59d5"
+// data "StatusPropertyFlags" "IgnoreResting"
+
+new entry "BOON_OF_TRUESIGHT_SEE_TRUEFORM"
+type "StatusData"
+data "StatusType" "BOOST"
+using "BOON_OF_TRUESIGHT_SEE_TRUEFORM"
+// data "StackId" "BOON_OF_TRUESIGHT_SEE_TRUEFORM"
+// data "AuraRadius" "18"
+// data "AuraStatuses" "TARGET:IF(not HasAnyStatus({'SG_Unconscious','SG_Incapacitated','SG_Blinded'},{},{},context.Source) and HasStatus('SG_Polymorph') and IsInSightPyramid(context.Source,context.TargetPosition)):ApplyStatus(TRUEFORM_REVEAL,100,1)"
+data "AuraStatuses" "TARGET:IF(not HasAnyStatus({'SG_Unconscious','SG_Incapacitated','SG_Blinded'},{},{},context.Source) and HasStatus('SG_Polymorph') and IsInSightPyramid(context.Source,context.TargetPosition) and not Ally()):ApplyStatus(TRUEFORM_REVEAL,100,1)"
+// data "AuraFlags" "CanAffectInvisibleItems;AIIgnoreOnSelf;ShouldCheckLOS"
+// data "StatusGroups" "SG_RemoveOnRespec"
+// data "StatusPropertyFlags" "DisableOverhead;DisablePortraitIndicator;DisableCombatlog;IgnoreResting"
 
 // ==================================== Invisible ====================================
 

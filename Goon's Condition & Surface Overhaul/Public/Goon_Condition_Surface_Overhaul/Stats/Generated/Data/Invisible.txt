@@ -325,7 +325,7 @@ data "RemoveEvents" ""
 // data "RemoveConditions" "GreaterInvisibilityCheck_InvisSpellOrRoll()"
 data "RemoveConditions" ""
 // data "OnRemoveFunctors" "RemoveStatus(GREATER_INVISIBILITY_TRACKER);RemoveStatus(GREATER_INVISIBILITY_SUCCESS)"
-data "OnRemoveFunctors" "IF(RemoveCause(StatusRemoveCause.External) and IsConcentrating(context.Source) and (HasStatus('SEE_INVISIBILITY_REVEAL') or HasStatus('GOON_GREATER_INVISIBILITY_REVEAL'))):ApplyStatus(GOON_GREATER_INVISIBILITY_SEEN,100,Target.GREATER_INVISIBILITY.Duration,,,,,true)"
+data "OnRemoveFunctors" "IF(RemoveCause(StatusRemoveCause.External) and IsConcentrating(context.Source) and (HasStatus('SEE_INVISIBILITY_REVEAL') or HasStatus('GOON_GREATER_INVISIBILITY_REVEAL'))):ApplyStatus(GOON_GREATER_INVISIBILITY_SEEN,100,Target.GREATER_INVISIBILITY.Duration,,,,,true);RemoveStatus(SAILOR_GREATERINVIS_FUNCTORS_AR)"
 data "Passives" "Goon_GreaterInvisibility_Technical"
 
 new entry "Goon_GreaterInvisibility_Technical"

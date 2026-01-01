@@ -313,7 +313,7 @@ using "GREATER_INVISIBILITY"
 // data "DisplayName" "h17d32d34g187eg46b1g938fg20d567df6eb4;2"
 // Entity has &lt;LSTag Tooltip="Advantage"&gt;Advantage&lt;/LSTag&gt; on &lt;LSTag Tooltip="AttackRoll"&gt;Attack Rolls&lt;/LSTag&gt;. Attack Rolls against it have &lt;LSTag Tooltip="Disadvantage"&gt;Disadvantage&lt;/LSTag&gt;. &lt;br&gt;&lt;br&gt;When interacting with items, casting spells or attacking, the entity needs to succeed a Stealth &lt;LSTag Tooltip="AbilityCheck"&gt;Check&lt;/LSTag&gt; to maintain Invisibility. The check becomes harder with each successful attempt.
 // data "Description" "ha4468dd2gdefeg4a52ga0c7g91ae57aef8a3;5"
-// Entity has &lt;LSTag Tooltip="Advantage"&gt;Advantage&lt;/LSTag&gt; on &lt;LSTag Tooltip="AttackRoll"&gt;Attack Roll&lt;/LSTag&gt;Attack Rolls&lt;/LSTag&gt;. Attack Rolls against it have &lt;LSTag Tooltip="Disadvantage"&gt;Disadvantage&lt;/LSTag&gt;.
+// Entity has &lt;LSTag Tooltip="Advantage"&gt;Advantage&lt;/LSTag&gt; on &lt;LSTag Tooltip="AttackRoll"&gt;Attack Rolls&lt;/LSTag&gt;. Attack Rolls against it have &lt;LSTag Tooltip="Disadvantage"&gt;Disadvantage&lt;/LSTag&gt;.
 data "Description" "h5a74ab78g6e2bg48ccga35bg544f21e9fb63;1"
 // data "Icon" "Spell_Illusion_GreaterInvisibility"
 // data "StackPriority" "5"

@@ -1,0 +1,69 @@
+// ==================================== Ensnared ====================================
+
+// new entry "ENSNARED"
+// type "StatusData"
+// data "StatusType" "BOOST"
+// Ensnared
+// data "DisplayName" "he7339650gce81g44bdga065g148828cacbaf;1"
+// Affected entity can't move. &lt;LSTag Tooltip="AttackRoll"&gt;Attack Rolls&lt;/LSTag&gt; against it have &lt;LSTag Tooltip="Advantage"&gt;Advantage&lt;/LSTag&gt;, while its Attack Rolls and Dexterity &lt;LSTag Tooltip="SavingThrow"&gt;Saving Throws&lt;/LSTag&gt; have &lt;LSTag Tooltip="Disadvantage"&gt;Disadvantage&lt;/LSTag&gt;.
+// data "Description" "h658fc0e0gfdbcg4a43g8242gb5a58aeabb38;6"
+// data "Icon" "statIcons_Ensnared"
+// data "StillAnimationType" "Snared"
+// data "StillAnimationPriority" "Snared"
+// data "SoundVocalStart" "WEAK"
+// data "StackId" "ENSNARED"
+// data "TickType" "EndTurn"
+// data "Boosts" "Advantage(AttackTarget);Disadvantage(AttackRoll);ActionResourceBlock(Movement);Disadvantage(SavingThrow,Dexterity);Attribute(Grounded)"
+// data "RemoveConditions" "SavingThrow(Ability.Strength, SourceSpellDC(),AdvantageOnRestrained(),DisadvantageOnRestrained())"
+// data "RemoveEvents" "OnTurn"
+// data "TooltipSave" "Strength"
+// data "StatusPropertyFlags" "InitiateCombat"
+// data "StatusGroups" "SG_Restrained;SG_Condition"
+// data "ApplyEffect" "92f376fb-aa71-4858-99b2-785cb9694734"
+// data "StatusEffect" "b5561d10-6cc4-4403-a567-b569c96a5d76"
+
+// ==================================== Entangled ====================================
+// Bug Fix: Added missing "AdvantageOnPlantImpedeAttacks" function to the Saving Throw that removes the condition, allowing Land's Stride: Advantage and similar effects to function.
+
+new entry "ENSNARED_VINES"
+type "StatusData"
+data "StatusType" "BOOST"
+// using "ENSNARED"
+using "ENSNARED_VINES"
+// Entangled
+// data "DisplayName" "h0d10c4beg5679g4be3gba43g05bc3a07af4b;2"
+// data "RemoveConditions" "SavingThrow(Ability.Strength, SourceSpellDC(),AdvantageOnRestrained(),DisadvantageOnRestrained())"
+data "RemoveConditions" "SavingThrow(Ability.Strength, SourceSpellDC(),AdvantageOnRestrained(),DisadvantageOnRestrained(),AdvantageOnPlantImpedeAttacks())"
+// data "OnRemoveFunctors" "ApplyStatus(ENSNARED_VINE_IMMUNE,100,0)"
+// data "StatusGroups" "SG_Restrained;SG_Condition;SG_Surface"
+
+// ==================================== References ====================================
+
+// function DisadvantageOnRestrained(source, target)
+//     source = source or context.Source
+//     target = target or context.Target
+
+//     return Tagged('RESTRAINED_DISADV', target) | HasPassive('FavoredEnemy_BountyHunter',source) | HasPassive('MAG_RestrainingAdvantage_Passive',source)
+// end
+
+// function AdvantageOnRestrained(source, target)
+//     source = source or context.Source
+//     target = target or context.Target
+
+//     return Tagged('RESTRAINED_ADV', target)
+// end
+
+// function AdvantageOnPlantImpedeAttacks(source, target)
+//     local source = source or context.Source
+//     local target = target or context.Target
+
+//     return Tagged('PLANT_IMPEDE_ADV')
+// end
+
+// new entry "MAG_BarbMonk_Strength_Passive"
+// type "PassiveData"
+// // Unwavering Bull
+// data "DisplayName" "h1f8f4992ge642g4467gb701gf06ba4c304ae;2"
+// // You cannot be pushed against your will and you have an <LSTag Tooltip="Advantage">Advantage</LSTag> on <LSTag Tooltip="SavingThrow">Saving Throws</LSTag> against being <LSTag Type="Status" Tooltip="RESTRAINED">Restrained</LSTag>.
+// data "Description" "ha949757fgd645g4f7bgaa2eg3eeb1c638446;3"
+// data "Boosts" "Attribute(Grounded);Tag(RESTRAINED_ADV)"

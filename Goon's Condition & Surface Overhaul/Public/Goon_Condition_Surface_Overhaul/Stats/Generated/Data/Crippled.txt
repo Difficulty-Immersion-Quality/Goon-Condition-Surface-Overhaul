@@ -1,0 +1,24 @@
+// ==================================== Maimed ====================================
+// Bug Fix: Added missing "SG_Restrained" status group, preventing it from being applied to entities with effects such as Freedom of Movement.
+
+new entry "CRIPPLED"
+type "StatusData"
+data "StatusType" "BOOST"
+using "CRIPPLED"
+// Maimed
+// data "DisplayName" "hb056c1b1g1556g49cag8060g1bf4c6ed6cdc;2"
+// &lt;LSTag Tooltip="MovementSpeed"&gt;Movement speed&lt;/LSTag&gt; reduced to 0, and has &lt;LSTag Tooltip="Disadvantage"&gt;Disadvantage&lt;/LSTag&gt; on Dexterity &lt;LSTag Tooltip="SavingThrow"&gt;Saving Throws&lt;/LSTag&gt;.&lt;br&gt;&lt;br&gt;Removed by healing.
+// data "Description" "hfd1b76begda0eg4508g9781g6dad0886b6b0;4"
+// data "Icon" "statIcons_Crippled"
+// data "StillAnimationType" "Weakened"
+// data "StillAnimationPriority" "Weakened"
+// data "StackId" "CRIPPLED"
+// data "TickType" "EndTurn"
+// data "Boosts" "ActionResourceMultiplier(Movement,0,0);ActionResourceBlock(Movement);Disadvantage(SavingThrow,Dexterity)"
+// data "RemoveEvents" "OnHeal"
+// data "StatusPropertyFlags" "InitiateCombat"
+// data "StatusGroups" "SG_Condition"
+data "StatusGroups" "SG_Condition;SG_Restrained"
+// data "StatusEffect" "24df7f3b-2bdc-4eb7-bcc3-19b25c03b635"
+// data "ManagedStatusEffectType" "Negative"
+// data "ManagedStatusEffectGroup" "d787f666-8ee6-4185-9365-6aac9ebe76ae"

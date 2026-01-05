@@ -23,7 +23,7 @@
 // data "StatusEffect" "b5561d10-6cc4-4403-a567-b569c96a5d76"
 
 // ==================================== Entangled ====================================
-// Bug Fix: Added missing "AdvantageOnPlantImpedeAttacks" function to the Saving Throw that removes the condition, allowing Land's Stride: Advantage and similar effects to function.
+// Bug Fix: Added missing "AdvantageOnPlantImpedeAttacks" function to the Saving Throw that removes the condition, allowing Land's Stride: Plants and similar effects to function.
 
 new entry "ENSNARED_VINES"
 type "StatusData"

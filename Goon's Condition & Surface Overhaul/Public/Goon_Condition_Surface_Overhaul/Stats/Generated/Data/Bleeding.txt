@@ -59,7 +59,7 @@ using "BLEEDING"
 // data "DisplayName" "h36efa902g81b7g4e3eg8137gb6149662d91c;1"
 // Takes [1] at the start of each turn and has &lt;LSTag Tooltip="Disadvantage"&gt;Disadvantage&lt;/LSTag&gt; on Constitution &lt;LSTag Tooltip="SavingThrow"&gt;Saving Throws&lt;/LSTag&gt;. &lt;br&gt;&lt;br&gt;Removed by healing.
 // data "Description" "hc32e5c52g3e8fg420cgbbedgfaf5a2f80b22;9"
-// Takes [1] at the start of each turn, for each round of HEAVY_BLEEDING on the target. Has &lt;LSTag Tooltip="Disadvantage"&gt;Disadvantage&lt;/LSTag&gt; on Constitution &lt;LSTag Tooltip="SavingThrow"&gt;Saving Throws&lt;/LSTag&gt;.&lt;br&gt;&lt;br&gt;When you receive healing you must succeed a &lt;LSTag Tooltip="Constitution"&gt;Constitution&lt;/LSTag&gt; &lt;LSTag Tooltip="SavingThrow"&gt;Saving Throws&lt;/LSTag&gt; to cure the bleeding.
+// Takes [1] at the start of each turn, for each round of Bleeding on the target. Has &lt;LSTag Tooltip="Disadvantage"&gt;Disadvantage&lt;/LSTag&gt; on Constitution &lt;LSTag Tooltip="SavingThrow"&gt;Saving Throws&lt;/LSTag&gt;.&lt;br&gt;&lt;br&gt;When you receive healing you must succeed a &lt;LSTag Tooltip="Constitution"&gt;Constitution&lt;/LSTag&gt; &lt;LSTag Tooltip="SavingThrow"&gt;Saving Throws&lt;/LSTag&gt; to cure the bleeding.
 data "Description" "h439f21feg2ef9g41dbg9d9cg30d1a9bf27bd;1"
 // data "DescriptionParams" "DealDamage(2,Slashing);"
 data "DescriptionParams" "DealDamage(1d4, Slashing)"
@@ -95,7 +95,7 @@ using "HEAVY_BLEEDING"
 // data "DisplayName" "h20585462g60b3g4f16gaec3g5cd52e4762e0"
 // Creature is &lt;LSTag Type="Status" Tooltip="BLEEDING"&gt;Bleeding&lt;/LSTag&gt; profusely, taking an additional 2 Slashing damage at the start of each turn and has &lt;LSTag Tooltip="Disadvantage"&gt;Disadvantage&lt;/LSTag&gt; on Constitution &lt;LSTag Tooltip="SavingThrow"&gt;Saving Throws&lt;/LSTag&gt;.
 // data "Description" "h764e4e3cg67bbg4e07g993ag2d7613215c74"
-// Takes [1] at the start of each turn and has &lt;LSTag Tooltip="Disadvantage"&gt;Disadvantage&lt;/LSTag&gt; on Constitution &lt;LSTag Tooltip="SavingThrow"&gt;Saving Throws&lt;/LSTag&gt;. &lt;br&gt;&lt;br&gt;When you receive healing you must succeed a &lt;LSTag Tooltip="Constitution"&gt;Constitution&lt;/LSTag&gt; &lt;LSTag Tooltip="SavingThrow"&gt;Saving Throws&lt;/LSTag&gt; to cure the bleeding.
+// Takes [1] at the start of each turn, for each round of Heavy Bleeding on the target. Has &lt;LSTag Tooltip="Disadvantage"&gt;Disadvantage&lt;/LSTag&gt; on Constitution &lt;LSTag Tooltip="SavingThrow"&gt;Saving Throws&lt;/LSTag&gt;.&lt;br&gt;&lt;br&gt;When you receive healing you must succeed a &lt;LSTag Tooltip="Constitution"&gt;Constitution&lt;/LSTag&gt; &lt;LSTag Tooltip="SavingThrow"&gt;Saving Throws&lt;/LSTag&gt; to cure the bleeding.
 data "Description" "habe265c7ga4abg41cag8e5egef049f4e14e1;1"
 // data "DescriptionParams" "DealDamage(4,Slashing);"
 data "DescriptionParams" "DealDamage(1d6,Slashing)"
@@ -119,7 +119,8 @@ data "StatusPropertyFlags" "InitiateCombat"
 data "StatusGroups" "SG_Condition"
 data "Passives" "Goon_Bleeding_Removal"
 
-// Removal passive
+// ==================================== Removal passive ====================================
+
 new entry "Goon_Bleeding_Removal"
 type "PassiveData"
 data "Properties" "IsHidden"

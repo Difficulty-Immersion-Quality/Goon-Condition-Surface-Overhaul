@@ -1,6 +1,11 @@
 // ==================================== Changes inspired by and originally based off (See) Invisibility Rework by drkekyll ====================================
 // Bug Fix: Invisible entities no longer have advantage against targets with Blindsight, or other means of seeing through Invisibility.
 // Note: Thanks to the frequently used inheritence of "INVISIBLE" not many "Boosts" fields warrant overwriting
+// TODO: In solo play and niche circumstances the enemy cannot really seek you out at all, and may awkwardly drop combat. Di and Sailor have some good stuff worth looking over.
+
+// https://gitlab.com/osirisofgit-group/baldurs-gate-3/BG3_Sensible_Ambushing/-/blob/master/Sensible_Ambushing/Mods/Sensible_Ambushing/ScriptExtender/Lua/Modules/_Stealth.lua?ref_type=heads#L54
+// https://gitlab.com/osirisofgit-group/baldurs-gate-3/BG3_Sensible_Ambushing/-/blob/master/Sensible_Ambushing/Mods/Sensible_Ambushing/ScriptExtender/Lua/Extras/_StealthAttacks.lua?ref_type=heads
+// I never tried to create the component myself though, so i'm not sure you can
 
 // ==================================== See Invisibility ====================================
 
@@ -21,6 +26,7 @@ data "AuraRadius" "18.5"
 // Become able to see &lt;LSTag Type="Status" Tooltip="INVISIBLE"&gt;Invisible&lt;/LSTag&gt; creatures, and possibly reveal them to others.
 // data "Description" "ha4544864g1c5eg4d1ag9c19gdec71cfb899c;3"
 // data "TooltipAttackSave" "Dexterity"
+data "TooltipAttackSave" ""
 // data "TooltipStatusApply" "ApplyStatus(SEE_INVISIBILITY,100,-1)"
 // data "CastSound" "Spell_Cast_Utility_SeeInvisibility_L1to3"
 // data "TargetSound" "Spell_Impact_Utility_SeeInvisibility_L1to3"

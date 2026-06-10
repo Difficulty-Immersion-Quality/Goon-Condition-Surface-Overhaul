@@ -72,7 +72,7 @@ using "SEE_INVISIBILITY_REVEAL"
 // data "DisplayName" "h02dada8bgfc7dg4049gaa19g640e62c470a4;3"
 // Affected entity lost its &lt;LSTag Type="Status" Tooltip="INVISIBLE"&gt;Invisibility&lt;/LSTag&gt; due to the effects of &lt;LSTag Type="Spell" Tooltip="Shout_SeeInvisibility"&gt;See Invisibility&lt;/LSTag&gt;.
 // data "Description" "h132a2200gca28g4571g9032g25f626cf31a1;3"
-// This &lt;LSTag Type="Status" Tooltip="INVISIBLE"&gt;Invisibile&lt;/LSTag&gt; entity's location is being revealed due to the effects of &lt;LSTag Type="Spell" Tooltip="Shout_SeeInvisibility"&gt;See Invisibility&lt;/LSTag&gt;. It retains the effects from being Invisible against those who cannot see it.
+// This &lt;LSTag Type="Status" Tooltip="INVISIBLE"&gt;Invisible&lt;/LSTag&gt; entity's location is being revealed due to the effects of &lt;LSTag Type="Spell" Tooltip="Shout_SeeInvisibility"&gt;See Invisibility&lt;/LSTag&gt;. It retains the effects from being Invisible against those who cannot see it.
 data "Description" "h0f1395ebg634ag4301gbca5gecbc01bf2d97;1"
 // data "Icon" "Spell_Divination_SeeInvisibility"
 // data "StackId" "SEE_INVISIBILITY_REVEAL"

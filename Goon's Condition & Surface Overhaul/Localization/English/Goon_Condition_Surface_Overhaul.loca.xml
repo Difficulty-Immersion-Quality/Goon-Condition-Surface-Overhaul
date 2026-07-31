@@ -1,42 +1,65 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <contentList>
-	<!-- "BURNING" --> <content contentuid="h67f4f865g2bf9g4282g9cadg85f6fdea55b1" version="1">Takes [1] at the start of each turn, for each round of Burning on the target.</content>
-	<!-- "BURNING_HOLY" --> <content contentuid="hd86ea7b2ge699g4e19g9ae9g02356f35cec7" version="1">Takes [1] at the start of each turn, for each round of Holy Fire on the target. Takes [2] for each round of Holy Fire instead, if the target is a Fiend or Undead.</content>
-	<!-- "Shout_Overheat_Azer" --> <content contentuid="h70615a33ge8abg425ag8143g1845ab2552a1" version="1">Release a fraction of your inner fire.&lt;br&gt;&lt;br&gt;All nearby creatures start &lt;LSTag Type="Status" Tooltip="BURNING"&gt;Burning&lt;/LSTag&gt; for [1] turns.</content>
+	<!-- "BURNING" --> 
+	<content contentuid="h67f4f865g2bf9g4282g9cadg85f6fdea55b1" version="1">Takes [1] at the start of each turn, for each round of Burning on the target.</content>
+	<!-- "BURNING_HOLY" --> 
+	<content contentuid="hd86ea7b2ge699g4e19g9ae9g02356f35cec7" version="1">Takes [1] at the start of each turn, for each round of Holy Fire on the target. Takes [2] for each round of Holy Fire instead, if the target is a Fiend or Undead.</content>
+	<!-- "Shout_Overheat_Azer" --> 
+	<content contentuid="h70615a33ge8abg425ag8143g1845ab2552a1" version="1">Release a fraction of your inner fire.&lt;br&gt;&lt;br&gt;All nearby creatures start &lt;LSTag Type="Status" Tooltip="BURNING"&gt;Burning&lt;/LSTag&gt; for [1] turns.</content>
 
-	<!-- "BLEEDING" --> <content contentuid="h439f21feg2ef9g41dbg9d9cg30d1a9bf27bd" version="1">Takes [1] at the start of each turn, for each round of Bleeding on the target. Has &lt;LSTag Tooltip="Disadvantage"&gt;Disadvantage&lt;/LSTag&gt; on Constitution &lt;LSTag Tooltip="SavingThrow"&gt;Saving Throws&lt;/LSTag&gt;.&lt;br&gt;&lt;br&gt;When you receive healing you must succeed a &lt;LSTag Tooltip="Constitution"&gt;Constitution&lt;/LSTag&gt; &lt;LSTag Tooltip="SavingThrow"&gt;Saving Throws&lt;/LSTag&gt; to cure the bleeding.</content>
-	<!-- "HEAVY_BLEEDING" --> <content contentuid="habe265c7ga4abg41cag8e5egef049f4e14e1" version="1">Takes [1] at the start of each turn, for each round of Heavy Bleeding on the target. Has &lt;LSTag Tooltip="Disadvantage"&gt;Disadvantage&lt;/LSTag&gt; on Constitution &lt;LSTag Tooltip="SavingThrow"&gt;Saving Throws&lt;/LSTag&gt;.&lt;br&gt;&lt;br&gt;When you receive healing you must succeed a &lt;LSTag Tooltip="Constitution"&gt;Constitution&lt;/LSTag&gt; &lt;LSTag Tooltip="SavingThrow"&gt;Saving Throws&lt;/LSTag&gt; to cure the bleeding.</content>
+	<!-- "BLEEDING" --> 
+	<content contentuid="h439f21feg2ef9g41dbg9d9cg30d1a9bf27bd" version="1">Takes [1] at the start of each turn, for each round of Bleeding on the target. Has &lt;LSTag Tooltip="Disadvantage"&gt;Disadvantage&lt;/LSTag&gt; on Constitution &lt;LSTag Tooltip="SavingThrow"&gt;Saving Throws&lt;/LSTag&gt;.&lt;br&gt;&lt;br&gt;When you receive healing you must succeed a &lt;LSTag Tooltip="Constitution"&gt;Constitution&lt;/LSTag&gt; &lt;LSTag Tooltip="SavingThrow"&gt;Saving Throws&lt;/LSTag&gt; to cure the bleeding.</content>
+	<!-- "HEAVY_BLEEDING" --> 
+	<content contentuid="habe265c7ga4abg41cag8e5egef049f4e14e1" version="1">Takes [1] at the start of each turn, for each round of Heavy Bleeding on the target. Has &lt;LSTag Tooltip="Disadvantage"&gt;Disadvantage&lt;/LSTag&gt; on Constitution &lt;LSTag Tooltip="SavingThrow"&gt;Saving Throws&lt;/LSTag&gt;.&lt;br&gt;&lt;br&gt;When you receive healing you must succeed a &lt;LSTag Tooltip="Constitution"&gt;Constitution&lt;/LSTag&gt; &lt;LSTag Tooltip="SavingThrow"&gt;Saving Throws&lt;/LSTag&gt; to cure the bleeding.</content>
 
-	<!-- "LOW_STORMSHORETABERNACLE_GODCURSED" --> <content contentuid="h07e5bdbcge7bcg47fdgaf02gb81f0034b090" version="1">Affected entity is cursed by transgressed and irritable gods. When it falls unconscious, it immediately dies.&lt;br&gt;&lt;br&gt;Once per long rest, when the affected entity dies a terrible envoy of the offended deity is conjured from the entity's corpse.</content>
+	<!-- "LOW_STORMSHORETABERNACLE_GODCURSED" --> 
+	<content contentuid="h07e5bdbcge7bcg47fdgaf02gb81f0034b090" version="1">Affected entity is cursed by transgressed and irritable gods. When it falls unconscious, it immediately dies.&lt;br&gt;&lt;br&gt;Once per long rest, when the affected entity dies a terrible envoy of the offended deity is conjured from the entity's corpse.</content>
 
-	<!-- "WET" --> <content contentuid="h6788aa6fg1c29g4313g9609ge1b8b7fe28ec" version="1">Prevented from &lt;LSTag Type="Status" Tooltip="BURNING"&gt;Burning&lt;/LSTag&gt; and &lt;LSTag Tooltip="Resistant"&gt;Resistant&lt;/LSTag&gt; to[1]. &lt;LSTag Tooltip="AttackRoll"&gt;Attacks&lt;/LSTag&gt; dealing[2] and[3] have &lt;LSTag Tooltip="Advantage"&gt;Advantage&lt;/LSTag&gt; against the entity, and they suffer &lt;LSTag Tooltip="Disadvantage"&gt;Disadvantage&lt;/LSTag&gt; on &lt;LSTag Tooltip="SavingThrow"&gt;Saving Throws&lt;/LSTag&gt; against associated effects.</content>
+	<!-- "WET" --> 
+	<content contentuid="h6788aa6fg1c29g4313g9609ge1b8b7fe28ec" version="1">Prevented from &lt;LSTag Type="Status" Tooltip="BURNING"&gt;Burning&lt;/LSTag&gt; and &lt;LSTag Tooltip="Resistant"&gt;Resistant&lt;/LSTag&gt; to[1]. &lt;LSTag Tooltip="AttackRoll"&gt;Attacks&lt;/LSTag&gt; dealing[2] and[3] have &lt;LSTag Tooltip="Advantage"&gt;Advantage&lt;/LSTag&gt; against the entity, and they suffer &lt;LSTag Tooltip="Disadvantage"&gt;Disadvantage&lt;/LSTag&gt; on &lt;LSTag Tooltip="SavingThrow"&gt;Saving Throws&lt;/LSTag&gt; against associated effects.</content>
 
-	<!-- "SILENCED" --> <content contentuid="ha9e39253g68cbg4f3cgbee9gb02ae743933e" version="1">Can't speak or cast spells with a verbal component.</content>
-	<!-- "DEAFENED" --> <content contentuid="h13824a4agbea7g4fd2g975fge758a07c3f68" version="1">Deafened</content>
-	<!-- "DEAFENED" --> <content contentuid="hc8e31f75g1cd9g4761gb0b0gc4c7943f58eb" version="1">Unable to hear. Automatically fail &lt;LSTag Tooltip="AbilityCheck"&gt;Ability Checks&lt;/LSTag&gt; that require hearing and succeed on &lt;LSTag Tooltip="SavingThrow"&gt;Saving Throws&lt;/LSTag&gt; against effects that require you to hear them.</content>
+	<!-- "SILENCED" --> 
+	<content contentuid="ha9e39253g68cbg4f3cgbee9gb02ae743933e" version="1">Can't speak or cast spells with a verbal component.</content>
+	<!-- "DEAFENED" --> 
+	<content contentuid="h13824a4agbea7g4fd2g975fge758a07c3f68" version="1">Deafened</content>
+	<content contentuid="hc8e31f75g1cd9g4761gb0b0gc4c7943f58eb" version="1">Unable to hear. Automatically fail &lt;LSTag Tooltip="AbilityCheck"&gt;Ability Checks&lt;/LSTag&gt; that require hearing and succeed on &lt;LSTag Tooltip="SavingThrow"&gt;Saving Throws&lt;/LSTag&gt; against effects that require you to hear them.</content>
 
-	<!-- "MAG_GISH_ARCANE_CHARGE" --> <content contentuid="he2b56349ge1bag4d8ag95a9gf046e3867c92" version="1">While &lt;LSTag Type="Status" Tooltip="THREATENED"&gt;Threatened&lt;/LSTag&gt;, affected entity has a bonus to damage with spells equal to their &lt;LSTag Tooltip="ProficiencyBonus"&gt;Proficiency Bonus&lt;/LSTag&gt;.</content>
+	<!-- "MAG_GISH_ARCANE_CHARGE" --> 
+	<content contentuid="he2b56349ge1bag4d8ag95a9gf046e3867c92" version="1">While &lt;LSTag Type="Status" Tooltip="THREATENED"&gt;Threatened&lt;/LSTag&gt;, affected entity has a bonus to damage with spells equal to their &lt;LSTag Tooltip="ProficiencyBonus"&gt;Proficiency Bonus&lt;/LSTag&gt;.</content>
 
-	<!-- "PETRIFIED" --> <content contentuid="h1c4e1ad3g8ddbg4182ga842gc666e4a076b5" version="1">Turned to stone. Can't move or take &lt;LSTag Tooltip="Action"&gt;Actions&lt;/LSTag&gt;, &lt;LSTag Tooltip="BonusAction"&gt;Bonus Actions&lt;/LSTag&gt;, or &lt;LSTag Type="ActionResource" Tooltip="ReactionActionPoint"&gt;Reactions&lt;/LSTag&gt;. &lt;LSTag Tooltip="Resistant"&gt;Resistant&lt;/LSTag&gt; to all damage.</content>
-	<!-- "ENTOMBED" --> <content contentuid="h2baf4d23g8e9ag44feg8b26ga6e3e896724b" version="1">Trapped in a spider's web. Can't move or take &lt;LSTag Tooltip="Action"&gt;Actions&lt;/LSTag&gt;, &lt;LSTag Tooltip="BonusAction"&gt;Bonus Actions&lt;/LSTag&gt;, or &lt;LSTag Type="ActionResource" Tooltip="ReactionActionPoint"&gt;Reactions&lt;/LSTag&gt;.&lt;br&gt;&lt;br&gt;The condition ends upon taking damage.</content>
+	<!-- "PETRIFIED" -->
+	<content contentuid="h1c4e1ad3g8ddbg4182ga842gc666e4a076b5" version="1">Turned to stone. Can't move or take &lt;LSTag Tooltip="Action"&gt;Actions&lt;/LSTag&gt;, &lt;LSTag Tooltip="BonusAction"&gt;Bonus Actions&lt;/LSTag&gt;, or &lt;LSTag Type="ActionResource" Tooltip="ReactionActionPoint"&gt;Reactions&lt;/LSTag&gt;. &lt;LSTag Tooltip="Resistant"&gt;Resistant&lt;/LSTag&gt; to all damage.</content>
+	<!-- "ENTOMBED" -->
+	<content contentuid="h2baf4d23g8e9ag44feg8b26ga6e3e896724b" version="1">Trapped in a spider's web. Can't move or take &lt;LSTag Tooltip="Action"&gt;Actions&lt;/LSTag&gt;, &lt;LSTag Tooltip="BonusAction"&gt;Bonus Actions&lt;/LSTag&gt;, or &lt;LSTag Type="ActionResource" Tooltip="ReactionActionPoint"&gt;Reactions&lt;/LSTag&gt;.&lt;br&gt;&lt;br&gt;The condition ends upon taking damage.</content>
 
-	<!-- "BARBED_ARROW", "BarbedArrow_Passive" --> <content contentuid="heecaf2c3g4213g46bdg9282g713d50fe960c" version="1">Take [1] when moving for each [2] &lt;LSTag Tooltip="MovementSpeed"&gt;moved&lt;/LSTag&gt;. Each time you receive damage from this condition, reduce the duration by [3].</content>
+	<!-- "BARBED_ARROW", "BarbedArrow_Passive" --> 
+	<content contentuid="heecaf2c3g4213g46bdg9282g713d50fe960c" version="1">Take [1] when moving for each [2] &lt;LSTag Tooltip="MovementSpeed"&gt;moved&lt;/LSTag&gt;. Each time you receive damage from this condition, reduce the duration by [3].</content>
 
-	<!-- "MAG_FROST" --> <content contentuid="h493e0851gdef1g4ac7gabf2g3b4eca27a671" version="1">Affected entity has &lt;LSTag Tooltip="Disadvantage"&gt;Disadvantage&lt;/LSTag&gt; on &lt;LSTag Tooltip="Dexterity"&gt;Dexterity&lt;/LSTag&gt; &lt;LSTag Tooltip="SavingThrow"&gt;Saving Throws&lt;/LSTag&gt;.&lt;br&gt;&lt;br&gt;When there are [1] or more turns remaining, the entity must succeed a &lt;LSTag Tooltip="Constitution"&gt;Constitution&lt;/LSTag&gt; Saving Throw or become &lt;LSTag Type="Status" Tooltip="FROZEN"&gt;Frozen&lt;/LSTag&gt;. On a successful save, take [2]. Afterward, the frost sloughs away.&lt;br&gt;&lt;br&gt;Removed by &lt;LSTag Type="Status" Tooltip="BURNING"&gt;Burning&lt;/LSTag&gt;.</content>
-	<!-- "FROZEN" --> <content contentuid="haab11d78g822cg4162g8a99gc4945d3abcf1" version="1">Affected entity is utterly enamelled in ice and is &lt;LSTag Type="Status" Tooltip="INCAPACITATED"&gt;incapacitated&lt;/LSTag&gt;. If it is dealt[1],[2], or[3], the ice shatters, ending the condition.</content>
+	<!-- "MAG_FROST" --> 
+	<content contentuid="h493e0851gdef1g4ac7gabf2g3b4eca27a671" version="1">Affected entity has &lt;LSTag Tooltip="Disadvantage"&gt;Disadvantage&lt;/LSTag&gt; on &lt;LSTag Tooltip="Dexterity"&gt;Dexterity&lt;/LSTag&gt; &lt;LSTag Tooltip="SavingThrow"&gt;Saving Throws&lt;/LSTag&gt;.&lt;br&gt;&lt;br&gt;When there are [1] or more turns remaining, the entity must succeed a &lt;LSTag Tooltip="Constitution"&gt;Constitution&lt;/LSTag&gt; Saving Throw or become &lt;LSTag Type="Status" Tooltip="FROZEN"&gt;Frozen&lt;/LSTag&gt;. On a successful save, take [2]. Afterward, the frost sloughs away.&lt;br&gt;&lt;br&gt;Removed by &lt;LSTag Type="Status" Tooltip="BURNING"&gt;Burning&lt;/LSTag&gt;.</content>
+	<!-- "FROZEN" --> 
+	<content contentuid="haab11d78g822cg4162g8a99gc4945d3abcf1" version="1">Affected entity is utterly enamelled in ice and is &lt;LSTag Type="Status" Tooltip="INCAPACITATED"&gt;incapacitated&lt;/LSTag&gt;. If it is dealt[1],[2], or[3], the ice shatters, ending the condition.</content>
 
-	<!-- "MAG_VIOLENCE" --> <content contentuid="h955519f7g26c3g4e76g802bg9944bc0a6b6a" version="1">You have a +1 bonus to damage when throwing or &lt;LSTag Tooltip="AttackRoll"&gt;attacking&lt;/LSTag&gt; with a melee weapons, for every turn this condition has remaining. </content>
+	<!-- "MAG_VIOLENCE" --> 
+	<content contentuid="h955519f7g26c3g4e76g802bg9944bc0a6b6a" version="1">You have a +1 bonus to damage when throwing or &lt;LSTag Tooltip="AttackRoll"&gt;attacking&lt;/LSTag&gt; with a melee weapons, for every turn this condition has remaining. </content>
 
-	<!-- "SEE_INVISIBILITY" --> <content contentuid="hd3da4135g93e7g41edg99c3g11ffcbce5a3f" version="1">&lt;LSTag Type="Status" Tooltip="INVISIBLE"&gt;Invisible&lt;/LSTag&gt; creatures within [1] are revealed and cannot benefit from their invisibility against you.</content>
-	<!-- "SEE_INVISIBILITY_REVEAL" --> <content contentuid="h0f1395ebg634ag4301gbca5gecbc01bf2d97" version="1">This &lt;LSTag Type="Status" Tooltip="INVISIBLE"&gt;Invisible&lt;/LSTag&gt; entity's location is being revealed due to the effects of &lt;LSTag Type="Spell" Tooltip="Shout_SeeInvisibility"&gt;See Invisibility&lt;/LSTag&gt;. It retains the effects from being Invisible against those who cannot see it.</content>
-	<!-- "Shout_SeeInvisibility_Seek" --> <content contentuid="ha06ae06dg1c88g43abgb807ga9f61ecca2b5" version="1">Search for nearby &lt;LSTag Type="Status" Tooltip="INVISIBLE"&gt;Invisible&lt;/LSTag&gt; creatures.</content>
-	<!-- "SEE_INVISIBILITY_SEEK" --> <content contentuid="h2a6ec662gd025g40f4g8f6cg16cc8f609c7a" version="1">Searching for nearby &lt;LSTag Type="Status" Tooltip="INVISIBLE"&gt;Invisible&lt;/LSTag&gt; creatures.</content>
-	<!-- "GREATER_INVISIBILITY" --> <content contentuid="h5a74ab78g6e2bg48ccga35bg544f21e9fb63" version="1">Entity has &lt;LSTag Tooltip="Advantage"&gt;Advantage&lt;/LSTag&gt; on &lt;LSTag Tooltip="AttackRoll"&gt;Attack Rolls&lt;/LSTag&gt;. Attack Rolls against it have &lt;LSTag Tooltip="Disadvantage"&gt;Disadvantage&lt;/LSTag&gt;.</content>
+	<!-- "SEE_INVISIBILITY" --> 
+	<content contentuid="hd3da4135g93e7g41edg99c3g11ffcbce5a3f" version="1">&lt;LSTag Type="Status" Tooltip="INVISIBLE"&gt;Invisible&lt;/LSTag&gt; creatures within [1] are revealed and cannot benefit from their invisibility against you.</content>
+	<!-- "SEE_INVISIBILITY_REVEAL" --> 
+	<content contentuid="h0f1395ebg634ag4301gbca5gecbc01bf2d97" version="1">This &lt;LSTag Type="Status" Tooltip="INVISIBLE"&gt;Invisible&lt;/LSTag&gt; entity's location is being revealed due to the effects of &lt;LSTag Type="Spell" Tooltip="Shout_SeeInvisibility"&gt;See Invisibility&lt;/LSTag&gt;. It retains the effects from being Invisible against those who cannot see it.</content>
+	<!-- "Shout_SeeInvisibility_Seek" --> 
+	<content contentuid="ha06ae06dg1c88g43abgb807ga9f61ecca2b5" version="1">Search for nearby &lt;LSTag Type="Status" Tooltip="INVISIBLE"&gt;Invisible&lt;/LSTag&gt; creatures.</content>
+	<!-- "SEE_INVISIBILITY_SEEK" --> 
+	<content contentuid="h2a6ec662gd025g40f4g8f6cg16cc8f609c7a" version="1">Searching for nearby &lt;LSTag Type="Status" Tooltip="INVISIBLE"&gt;Invisible&lt;/LSTag&gt; creatures.</content>
+	<!-- "GREATER_INVISIBILITY" --> 
+	<content contentuid="h5a74ab78g6e2bg48ccga35bg544f21e9fb63" version="1">Entity has &lt;LSTag Tooltip="Advantage"&gt;Advantage&lt;/LSTag&gt; on &lt;LSTag Tooltip="AttackRoll"&gt;Attack Rolls&lt;/LSTag&gt;. Attack Rolls against it have &lt;LSTag Tooltip="Disadvantage"&gt;Disadvantage&lt;/LSTag&gt;.</content>
 
-	<!-- "" --> <content contentuid="" version="1"></content>
-	<!-- "" --> <content contentuid="" version="1"></content>
-	<!-- "" --> <content contentuid="" version="1"></content>
-	<!-- "" --> <content contentuid="" version="1"></content>
+	<!-- "" --> 
+	<content contentuid="" version="1"></content>
+	<!-- "" --> 
+	<content contentuid="" version="1"></content>
+	<!-- "" --> 
+	<content contentuid="" version="1"></content>
 
 	<content contentuid="hf5c94340gc6fdg440dg8aa2ga74105b1dcde" version="1">Stop Drop and Roll</content>
 	<content contentuid="h78d4d104g4aa0g4439g92cdg29c4b8685abb" version="1">You're on fire! Smother the flames by going &lt;LSTag Type="Status" Tooltip="PRONE"&gt;Prone&lt;/LSTag&gt;.</content>

@@ -35,6 +35,8 @@
 	<!-- "BARBED_ARROW", "BarbedArrow_Passive" --> 
 	<content contentuid="heecaf2c3g4213g46bdg9282g713d50fe960c" version="1">Take [1] when moving for each [2] &lt;LSTag Tooltip="MovementSpeed"&gt;moved&lt;/LSTag&gt;. Each time you receive damage from this condition, reduce the duration by [3].</content>
 
+	<!-- "CHILLED" -->
+	<content contentuid="h05178f41gedeag452bga196gf73d2b482820" version="1">Affected entity is &lt;LSTag Tooltip="Vulnerable"&gt;Vulnerable&lt;/LSTag&gt; to[1] and &lt;LSTag Tooltip="Resistant"&gt;Resistant&lt;/LSTag&gt; to[2].</content>
 	<!-- "MAG_FROST" --> 
 	<content contentuid="h493e0851gdef1g4ac7gabf2g3b4eca27a671" version="1">Affected entity has &lt;LSTag Tooltip="Disadvantage"&gt;Disadvantage&lt;/LSTag&gt; on &lt;LSTag Tooltip="Dexterity"&gt;Dexterity&lt;/LSTag&gt; &lt;LSTag Tooltip="SavingThrow"&gt;Saving Throws&lt;/LSTag&gt;.&lt;br&gt;&lt;br&gt;When there are [1] or more turns remaining, the entity must succeed a &lt;LSTag Tooltip="Constitution"&gt;Constitution&lt;/LSTag&gt; Saving Throw or become &lt;LSTag Type="Status" Tooltip="FROZEN"&gt;Frozen&lt;/LSTag&gt;. On a successful save, take [2]. Afterward, the frost sloughs away.&lt;br&gt;&lt;br&gt;Removed by &lt;LSTag Type="Status" Tooltip="BURNING"&gt;Burning&lt;/LSTag&gt;.</content>
 	<!-- "FROZEN" --> 
@@ -53,6 +55,9 @@
 	<content contentuid="h2a6ec662gd025g40f4g8f6cg16cc8f609c7a" version="1">Searching for nearby &lt;LSTag Type="Status" Tooltip="INVISIBLE"&gt;Invisible&lt;/LSTag&gt; creatures.</content>
 	<!-- "GREATER_INVISIBILITY" --> 
 	<content contentuid="h5a74ab78g6e2bg48ccga35bg544f21e9fb63" version="1">Entity has &lt;LSTag Tooltip="Advantage"&gt;Advantage&lt;/LSTag&gt; on &lt;LSTag Tooltip="AttackRoll"&gt;Attack Rolls&lt;/LSTag&gt;. Attack Rolls against it have &lt;LSTag Tooltip="Disadvantage"&gt;Disadvantage&lt;/LSTag&gt;.</content>
+
+	<!-- "MAG_MOMENTUM" --> 
+	<content contentuid="h76a68b74ga5beg4d79g8fcfg39df423286ae" version="1">Spurred on by a sense of urgency. The affected entity's &lt;LSTag Tooltip="MovementSpeed"&gt;movement speed&lt;/LSTag&gt; has increased by [1] per remaining duration of this effect.&lt;br&gt;&lt;br&gt;Removed when &lt;LSTag Type="Status" Tooltip="RESTRAINED"&gt;Restrained&lt;/LSTag&gt;, &lt;LSTag Type="Status" Tooltip="INCAPACITATED"&gt;Incapacitated&lt;/LSTag&gt;, &lt;LSTag Type="Status" Tooltip="PRONE"&gt;Prone&lt;/LSTag&gt;, or &lt;LSTag Type="Status" Tooltip="SLOW"&gt;Slowed&lt;/LSTag&gt;.</content>
 
 	<!-- "" --> 
 	<content contentuid="" version="1"></content>

@@ -1,6 +1,7 @@
 // ==================================== Arcane Charge ====================================
 // Bug Fix: The entity with Arcane Charge now benefits from bonus damage while Threatened, not when its target is Threatened.
 // Changes: Damage now scales with Proficiency Bonus instead of a flat +2.
+// TODO: Needs the special blade cantrip stuff doooood
 
 new entry "MAG_GISH_ARCANE_CHARGE"
 type "StatusData"
@@ -23,6 +24,7 @@ data "Boosts" "IF(HasStatus('FLANKED',context.Source) and IsSpell()):DamageBonus
 // data "StatusEffect" "4425d0c5-277f-4714-bcdd-b2e97eb615ec"
 
 // Larian's use of inheritence makes me wanna rip pee pee off, but the below is fine.
+// TODO: Goon's Inheritance Overhaul lol
 
 // new entry "MAG_MAGIC_ITEM_POWERED_CAST"
 // type "StatusData"

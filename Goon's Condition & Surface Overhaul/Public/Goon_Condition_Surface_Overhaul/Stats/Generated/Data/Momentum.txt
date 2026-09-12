@@ -1,21 +1,30 @@
 // ==================================== Momentum ====================================
-// TODO: Past me wanted to do something with this.
+// Bug Fix: Restrained, Incapacitated, and Prone now remove the condition.
+// Bug Fix: Is now removed by more Slow like conditions, instead of just Slow itself.
+// Changes: Description improved.
+// Changes: Ticks at the start of the affected entity's turn, instead of the end of their turn.
 
-// new entry "MAG_MOMENTUM"
-// type "StatusData"
-// data "StatusType" "BOOST"
-// Momentum
+new entry "MAG_MOMENTUM"
+type "StatusData"
+data "StatusType" "BOOST"
+using "MAG_MOMENTUM"
+// // Momentum
 // data "DisplayName" "h2d9bbf02gea79g4197g9efegcb2615a3e82e;2"
-// Spurred on by a sense of urgency. The affected entity's &lt;LSTag Tooltip="MovementSpeed"&gt;movement speed&lt;/LSTag&gt; has increased by [1] per remaining duration of this effect.&lt;br&gt;&lt;br&gt;Removed when &lt;LSTag Type="Status" Tooltip="RESTRAINED"&gt;Restrained&lt;/LSTag&gt;, &lt;LSTag Type="Status" Tooltip="INCAPACITATED"&gt;Incapacitated&lt;/LSTag&gt;, &lt;LSTag Type="Status" Tooltip="PRONE"&gt;Prone&lt;/LSTag&gt;, or slowed down.
+// // Spurred on by a sense of urgency. The affected entity's &lt;LSTag Tooltip="MovementSpeed"&gt;movement speed&lt;/LSTag&gt; has increased by [1] per remaining duration of this effect.&lt;br&gt;&lt;br&gt;Removed when &lt;LSTag Type="Status" Tooltip="RESTRAINED"&gt;Restrained&lt;/LSTag&gt;, &lt;LSTag Type="Status" Tooltip="INCAPACITATED"&gt;Incapacitated&lt;/LSTag&gt;, &lt;LSTag Type="Status" Tooltip="PRONE"&gt;Prone&lt;/LSTag&gt;, or slowed down.
 // data "Description" "ha617de62g5c63g4e40g97a1gfae866256960;5"
+// // Spurred on by a sense of urgency. The affected entity's &lt;LSTag Tooltip="MovementSpeed"&gt;movement speed&lt;/LSTag&gt; has increased by [1] per remaining duration of this effect.&lt;br&gt;&lt;br&gt;Removed when &lt;LSTag Type="Status" Tooltip="RESTRAINED"&gt;Restrained&lt;/LSTag&gt;, &lt;LSTag Type="Status" Tooltip="INCAPACITATED"&gt;Incapacitated&lt;/LSTag&gt;, &lt;LSTag Type="Status" Tooltip="PRONE"&gt;Prone&lt;/LSTag&gt;, or &lt;LSTag Type="Status" Tooltip="SLOW"&gt;Slowed&lt;/LSTag&gt;.
+data "Description" "h76a68b74ga5beg4d79g8fcfg39df423286ae;1"
 // data "DescriptionParams" "Distance(1.5)"
 // data "Icon" "statIcons_Momentum"
 // data "SoundLoop" "Spell_Status_Dash_MO"
 // data "StackId" "MAG_MOMENTUM"
 // data "StackType" "Additive"
 // data "TickType" "EndTurn"
+data "TickType" ""
 // data "Boosts" "ActionResource(Movement, 1.5, 0)"
+data "RemoveEvents" "OnStatusApplied"
 // data "RemoveConditions" "StatusHasStatusGroup(SG_Incapacitated) or StatusHasStatusGroup(SG_Unconscious) or StatusHasStatusGroup(SG_Prone) or StatusHasStatusGroup(SG_Restrained) or HasStatus('SLOW')"
+data "RemoveConditions" "StatusHasStatusGroup(context.StatusId, 'SG_Incapacitated') or StatusHasStatusGroup(context.StatusId, 'SG_Unconscious') or StatusHasStatusGroup(context.StatusId, 'SG_Prone') or StatusHasStatusGroup(context.StatusId, 'SG_Restrained') or Goon_HasSlowStatus()"
 // data "StatusPropertyFlags" "MultiplyEffectsByDuration"
 // data "OnApplyFunctors" "IF(MaximumHighStackableStatus(context.Source, 'MAG_MOMENTUM')):SetStatusDuration(MAG_MOMENTUM, 7, ForceSet) "
 // data "ApplyEffect" "c8f93b82-29e0-44ab-af10-d4284d67974b"

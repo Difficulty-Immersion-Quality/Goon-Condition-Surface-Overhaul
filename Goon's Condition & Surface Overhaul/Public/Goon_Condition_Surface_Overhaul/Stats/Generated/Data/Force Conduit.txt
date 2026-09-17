@@ -1,0 +1,35 @@
+// ==================================== Force Conduit ====================================
+// Changes: Description improved.
+
+new entry "MAG_ZOC_FORCE_CONDUIT"
+type "StatusData"
+data "StatusType" "BOOST"
+using "MAG_ZOC_FORCE_CONDUIT"
+// // Force Conduit
+// data "DisplayName" "hbd400726g1814g4a03ga7f7gc9494a5e5c25;2"
+// // Bludgeoning, Piercing, and Slashing damage against the affected entity is reduced by [1] per turn remaining. <br><br>If the entity takes damage while it has 5 or more turns remaining, it deals [2] in a [3] radius.
+// data "Description" "h891927a2gd210g44e1ga5d9g7ac3ff823bbd;7"
+// // Bludgeoning, Piercing, and Slashing damage against the affected entity is reduced by [4] per turn remaining. <br><br>If the entity takes damage while it has 5 or more turns remaining, it deals [5] in a [6] radius.
+data "Description" "h730c0859g21fdg4b83g89acgbc42b98b2d47;1"
+// data "DescriptionParams" "1;DealDamage(1d4,Force);Distance(6)"
+data "DescriptionParams" "DealDamage(,Bludgeoning);DealDamage(,Piercing);DealDamage(,Slashing);1;DealDamage(1d4,Force);Distance(6)"
+// data "Icon" "statIcons_ForceConduit"
+// data "SoundLoop" "Misc_Status_ForceConduit_MO"
+// data "SoundStop" "Misc_Status_ForceConduit_MO_Stop"
+// data "StackId" "MAG_ZOC_FORCE_CONDUIT"
+// data "StackType" "Additive"
+// data "Boosts" "DamageReduction(Slashing, Flat, 1);DamageReduction(Bludgeoning, Flat, 1);DamageReduction(Piercing, Flat, 1)"
+// data "Passives" "MAG_ZOC_ForceConduit_EnergyConversionBlast_Passive;MAG_ZOC_ForceConduit_EnergyConversionTrigger_Passive"
+// data "TickFunctors" "IF(not HasStatus('MAG_ZOC_FORCE_CONDUIT_MAX_CHARGED_TECHNICAL') and ForceConduitBlastRequirement(context.Target)):ApplyStatus(MAG_ZOC_FORCE_CONDUIT_MAX_CHARGED_TECHNICAL, 100, -1)"
+// data "StatusPropertyFlags" "MultiplyEffectsByDuration"
+// data "OnRemoveFunctors" "RemoveStatus(MAG_ZOC_FORCE_CONDUIT_MAX_CHARGED_TECHNICAL)"
+// data "StatusEffect" "cb96e5d4-8a46-47ab-9af8-3649b206e624"
+
+// new entry "MAG_ZOC_FORCE_CONDUIT_DURATION_TECHNICAL"
+// type "StatusData"
+// data "StatusType" "BOOST"
+// using "MAG_VIOLENCE_DURATION_TECHNICAL"
+// // %%% Force Conduit Duration Check
+// data "DisplayName" "h9c059d0cgff1fg4ab6g9fb9g2ca3225958c5;1"
+// data "StackId" "MAG_ZOC_FORCE_CONDUIT_DURATION_TECHNICAL"
+// data "OnApplyFunctors" "IF(MaximumHighStackableStatus(context.Target, 'MAG_ZOC_FORCE_CONDUIT')):SetStatusDuration(MAG_ZOC_FORCE_CONDUIT, 7, ForceSet) "

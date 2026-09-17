@@ -1,11 +1,12 @@
 // ==================================== Prone ====================================
+// TODO: Split prone and unconscious without breaking shit.
 
 // new entry "PRONE"
 // type "StatusData"
 // data "StatusType" "KNOCKED_DOWN"
 // // Prone
 // data "DisplayName" "hf436e702gfa14g45aagabaeg6fa3d54c1061;1"
-// // Can't move or take actions, bonus actions, or reactions, and has <LSTag Tooltip="Disadvantage">Disadvantage</LSTag> on Strength and Dexterity <LSTag Tooltip="SavingThrow">Saving Throws</LSTag>. <br><br>Attacks against a Prone creature have <LSTag Tooltip="Advantage">Advantage
+// // Can't move or take actions, bonus actions, or reactions, and has &lt;LSTag Tooltip="Disadvantage"&gt;Disadvantage&lt;/LSTag&gt; on Strength and Dexterity &lt;LSTag Tooltip="SavingThrow"&gt;Saving Throws&lt;/LSTag&gt;. &lt;br&gt;&lt;br&gt;Attacks against a Prone creature have &lt;LSTag Tooltip="Advantage"&gt;Advantage&lt;/LSTag&gt; if they're made within [1] of the creature.&lt;br&gt;&lt;br&gt;A Prone creature must spend half its &lt;LSTag Tooltip="MovementSpeed"&gt;movement speed&lt;/LSTag&gt; to stand up.
 // data "Description" "hfe0869e3g3954g4eb1g915agd39ade42ecde;3"
 // data "DescriptionParams" "Distance(3)"
 // data "Icon" "Status_Prone"

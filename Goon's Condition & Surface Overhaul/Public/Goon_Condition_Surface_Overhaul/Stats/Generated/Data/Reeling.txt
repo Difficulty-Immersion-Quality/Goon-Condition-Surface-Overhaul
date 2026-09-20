@@ -1,0 +1,41 @@
+// ==================================== Prone ====================================
+// Bug Fix: MAG_ATTACK_DEBUFF_DURATION_TECHNICAL no longer recursively applies.
+
+// new entry "MAG_ATTACK_DEBUFF"
+// type "StatusData"
+// data "StatusType" "BOOST"
+// // Reeling
+// data "DisplayName" "hff445074g69fdg4e54g8243g0b1751dac7a0;2"
+// // Recovering from receiving a terrible blow or hitting a strong metal. Has a -1 penalty to <LSTag Tooltip="AttackRoll">Attack Rolls</LSTag> for every turn remaining.
+// data "Description" "he7905c63g65b6g4588ga00dgbb13d01b2a96;5"
+// data "Icon" "statIcons_Mag_Attack_Debuff"
+// data "StillAnimationType" "Weakened"
+// data "StillAnimationPriority" "Weakened"
+// data "SoundLoop" "Status_Silence"
+// data "StackId" "MAG_ATTACK_DEBUFF"
+// data "StackPriority" "1"
+// data "StackType" "Additive"
+// data "TickType" "EndTurn"
+// data "Boosts" "RollBonus(Attack, -1)"
+// data "Passives" "MAG_MeleeDebuff_ReelingDurationCheck_Passive"
+// data "RemoveConditions" "IsAttack()"
+// data "RemoveEvents" "OnAttack"
+// data "StatusPropertyFlags" "MultiplyEffectsByDuration"
+// data "StatusEffect" "a15aaf6c-5fcd-4602-a7b5-343c98d49591"
+
+new entry "MAG_MeleeDebuff_ReelingDurationCheck_Passive"
+type "PassiveData"
+// using "MAG_MeleeDebuff_AttackDebuff1_OnDamaged_Passive"
+using "MAG_MeleeDebuff_ReelingDurationCheck_Passive"
+// data "Properties" "IsHidden"
+// data "StatsFunctorContext" "OnCreate;OnTurn;OnStatusApplied"
+// data "Conditions" ""
+data "Conditions" "context.HasContextFlag(StatsFunctorContext.OnCreate) or context.HasContextFlag(StatsFunctorContext.OnTurn) or (context.HasContextFlag(StatsFunctorContext.OnStatusApplied) and not StatusId('MAG_ATTACK_DEBUFF_DURATION_TECHNICAL'))"
+// data "StatsFunctors" "ApplyStatus(MAG_ATTACK_DEBUFF_DURATION_TECHNICAL, 100, 1)"
+
+// new entry "MAG_ATTACK_DEBUFF_DURATION_TECHNICAL"
+// type "StatusData"
+// data "StatusType" "BOOST"
+// using "MAG_VIOLENCE_DURATION_TECHNICAL"
+// data "StackId" "MAG_ATTACK_DEBUFF_DURATION_TECHNICAL"
+// data "OnApplyFunctors" "IF(MaximumHigherStackableStatus(context.Target, 'MAG_ATTACK_DEBUFF')):SetStatusDuration(MAG_ATTACK_DEBUFF, 10, ForceSet) "

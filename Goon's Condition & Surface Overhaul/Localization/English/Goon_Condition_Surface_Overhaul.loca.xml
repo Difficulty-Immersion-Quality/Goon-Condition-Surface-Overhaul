@@ -59,6 +59,9 @@
 	<!-- "MAG_MOMENTUM" --> 
 	<content contentuid="h76a68b74ga5beg4d79g8fcfg39df423286ae" version="1">Spurred on by a sense of urgency. The affected entity's &lt;LSTag Tooltip="MovementSpeed"&gt;movement speed&lt;/LSTag&gt; has increased by [1] per remaining duration of this effect.&lt;br&gt;&lt;br&gt;Removed when &lt;LSTag Type="Status" Tooltip="RESTRAINED"&gt;Restrained&lt;/LSTag&gt;, &lt;LSTag Type="Status" Tooltip="INCAPACITATED"&gt;Incapacitated&lt;/LSTag&gt;, &lt;LSTag Type="Status" Tooltip="PRONE"&gt;Prone&lt;/LSTag&gt;, or &lt;LSTag Type="Status" Tooltip="SLOW"&gt;Slowed&lt;/LSTag&gt;.</content>
 
+	<!-- "MAG_ZOC_FORCE_CONDUIT" --> 
+	<content contentuid="h1faab941gf79dg4100gb456gbe3dbb2050da" version="1">[1],[2],and[3] against the affected entity is reduced by [4] per turn remaining.&lt;br&gt;&lt;br&gt;If the entity takes damage while it has [5] or more rounds remaining, it deals [6] in a [7] radius.</content>
+
 	<!-- "" --> 
 	<content contentuid="" version="1"></content>
 	<!-- "" --> 

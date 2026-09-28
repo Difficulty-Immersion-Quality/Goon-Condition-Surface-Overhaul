@@ -6,7 +6,7 @@
 // data "StatusType" "BOOST"
 // // Reeling
 // data "DisplayName" "hff445074g69fdg4e54g8243g0b1751dac7a0;2"
-// // Recovering from receiving a terrible blow or hitting a strong metal. Has a -1 penalty to <LSTag Tooltip="AttackRoll">Attack Rolls</LSTag> for every turn remaining.
+// // Recovering from receiving a terrible blow or hitting a strong metal. Has a -1 penalty to &lt;LSTag Tooltip="AttackRoll"&gt;Attack Rolls&lt;/LSTag&gt; for every turn remaining.
 // data "Description" "he7905c63g65b6g4588ga00dgbb13d01b2a96;5"
 // data "Icon" "statIcons_Mag_Attack_Debuff"
 // data "StillAnimationType" "Weakened"

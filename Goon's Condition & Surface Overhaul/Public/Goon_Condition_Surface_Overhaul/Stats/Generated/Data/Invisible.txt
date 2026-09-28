@@ -1,8 +1,8 @@
 // ==================================== Changes inspired by and originally based off (See) Invisibility Rework by drkekyll ====================================
 // Bug Fix: Invisible entities no longer have advantage against targets with Blindsight, or other means of seeing through Invisibility.
 // Note: Thanks to the frequently used inheritence of "INVISIBLE" not many "Boosts" fields warrant overwriting
-// TODO: In solo play and niche circumstances the enemy cannot really seek you out at all, and may awkwardly drop combat. Di and Sailor have some good stuff worth looking over.
 
+// TODO: In solo play and niche circumstances the enemy cannot really seek you out at all, and may awkwardly drop combat. Di and Sailor have some good stuff worth looking over.
 // https://gitlab.com/osirisofgit-group/baldurs-gate-3/BG3_Sensible_Ambushing/-/blob/master/Sensible_Ambushing/Mods/Sensible_Ambushing/ScriptExtender/Lua/Modules/_Stealth.lua?ref_type=heads#L54
 // https://gitlab.com/osirisofgit-group/baldurs-gate-3/BG3_Sensible_Ambushing/-/blob/master/Sensible_Ambushing/Mods/Sensible_Ambushing/ScriptExtender/Lua/Extras/_StealthAttacks.lua?ref_type=heads
 // I never tried to create the component myself though, so i'm not sure you can
@@ -277,6 +277,7 @@ data "OnRemoveFunctors" "IF(RemoveCause(StatusRemoveCause.External) and IsConcen
 
 // ==================================== Greater Invisibility
 // Natively compatible with Sailor's changes in Arcane Recovery - Spell Balance Intent and Flavor.
+// TODO: Refactor.
 
 new entry "Target_Invisibility_Greater"
 type "SpellData"
@@ -384,6 +385,7 @@ data "StatusPropertyFlags" "UnavailableInActiveRoll;ExcludeFromPortraitRendering
 data "OnRemoveFunctors" "IF(RemoveCause(StatusRemoveCause.External) and IsConcentrating(context.Source) and not HasStatus('SEE_INVISIBILITY_REVEAL')):ApplyStatus(GREATER_INVISIBILITY,100,Target.GOON_GREATER_INVISIBILITY_SEEN.Duration,,,,,true)"
 
 // ==================================== Shadow Blend
+// TODO: Obscurity rules?
 
 new entry "SHADOWBLEND"
 type "StatusData"
@@ -693,6 +695,7 @@ data "RemoveConditions" "(IsStatusEvent(StatusEvent.OnSpellCast) and not HasSpel
 data "OnRemoveFunctors" "IF(RemoveCause(StatusRemoveCause.External) and not HasStatus('SEE_INVISIBILITY_REVEAL')):ApplyStatus(POTION_OF_INVISIBILITY,100,Target.GOON_POTION_OF_INVISIBILITY_SEEN.Duration,,,,,true)"
 
 // ==================================== One with the Shadows
+// TODO: Obscurity rules? Guess based on name lol.
 
 new entry "ONE_WITH_SHADOWS"
 type "StatusData"
@@ -824,6 +827,8 @@ data "RemoveConditions" "IsStatusEvent(StatusEvent.OnAttacked) or not HasStatus(
 data "OnRemoveFunctors" "IF(RemoveCause(StatusRemoveCause.External) and not HasStatus('SEE_INVISIBILITY_REVEAL')):ApplyStatus(LOW_POLTERGEIST_INVISIBLE,100,Target.GOON_LOW_POLTERGEIST_INVISIBLE_SEEN.Duration,,,,,true)"
 
 // ==================================== Unseen Menace - Invisible Weapon
+// TODO: Allow disarming for creatures that can see it.
+// TODO: Check what determines advantage and all that.
 
 new entry "MAG_INVISIBLE_WEAPON"
 type "StatusData"
@@ -901,7 +906,7 @@ using "EMPTY_BODY"
 // This entity is &lt;LSTag Type="Status" Tooltip="INVISIBILITY"&gt;Invisible&lt;/LSTag&gt; and &lt;LSTag Type="Status" Tooltip="RESISTANCE"&gt;Resistant&lt;/LSTag&gt; to all damage except force damage.
 // data "Description" "h5f4df36fge60cg426agb675g86c92d44cd71;1"
 // data "Boosts" "IgnoreLeaveAttackRange; Invisibility(); Advantage(AttackRoll); DetectDisturbancesBlock(true);Resistance(Bludgeoning,Resistant);Resistance(Slashing,Resistant);Resistance(Piercing,Resistant);Resistance(Fire,Resistant);Resistance(Cold,Resistant);Resistance(Acid,Resistant);Resistance(Poison,Resistant);Resistance(Thunder,Resistant);Resistance(Lightning,Resistant);Resistance(Radiant,Resistant);Resistance(Necrotic,Resistant);Resistance(Psychic,Resistant)"
-data "Boosts" "IgnoreLeaveAttackRange(); Invisibility(); IF(not Goon_CanSeeInvisible(false)):Disadvantage(AttackTarget); IF(not Goon_CanSeeInvisible(true)):Advantage(AttackRoll); DetectDisturbancesBlock(true); Resistance(Bludgeoning,Resistant);Resistance(Slashing,Resistant);Resistance(Piercing,Resistant);Resistance(Fire,Resistant);Resistance(Cold,Resistant);Resistance(Acid,Resistant);Resistance(Poison,Resistant);Resistance(Thunder,Resistant);Resistance(Lightning,Resistant);Resistance(Radiant,Resistant);Resistance(Necrotic,Resistant);Resistance(Psychic,Resistant)"
+data "Boosts" "IgnoreLeaveAttackRange();Invisibility();IF(not Goon_CanSeeInvisible(false)):Disadvantage(AttackTarget);IF(not Goon_CanSeeInvisible(true)):Advantage(AttackRoll);DetectDisturbancesBlock(true); Resistance(Bludgeoning,Resistant);Resistance(Slashing,Resistant);Resistance(Piercing,Resistant);Resistance(Fire,Resistant);Resistance(Cold,Resistant);Resistance(Acid,Resistant);Resistance(Poison,Resistant);Resistance(Thunder,Resistant);Resistance(Lightning,Resistant);Resistance(Radiant,Resistant);Resistance(Necrotic,Resistant);Resistance(Psychic,Resistant)"
 // data "RemoveEvents" ""
 // data "RemoveConditions" ""
 data "OnRemoveFunctors" "IF(RemoveCause(StatusRemoveCause.External) and HasStatus('SEE_INVISIBILITY_REVEAL')):ApplyStatus(GOON_EMPTY_BODY_SEEN,100,Target.EMPTY_BODY.Duration,,,,,true)"
@@ -912,8 +917,8 @@ new entry "GOON_EMPTY_BODY_SEEN"
 type "StatusData"
 data "StatusType" "INVISIBLE"
 using "EMPTY_BODY"
-// data "Boosts" "IgnoreLeaveAttackRange; Invisibility(); IF(not Goon_CanSeeInvisible(false)):Disadvantage(AttackTarget); IF(not Goon_CanSeeInvisible(true)):Advantage(AttackRoll); DetectDisturbancesBlock(true); Resistance(Bludgeoning,Resistant);Resistance(Slashing,Resistant);Resistance(Piercing,Resistant);Resistance(Fire,Resistant);Resistance(Cold,Resistant);Resistance(Acid,Resistant);Resistance(Poison,Resistant);Resistance(Thunder,Resistant);Resistance(Lightning,Resistant);Resistance(Radiant,Resistant);Resistance(Necrotic,Resistant);Resistance(Psychic,Resistant)"
-data "Boosts" "IF(not Goon_CanSeeInvisible(false)):Disadvantage(AttackTarget); IF(not Goon_CanSeeInvisible(true)):Advantage(AttackRoll); Resistance(Bludgeoning,Resistant);Resistance(Slashing,Resistant);Resistance(Piercing,Resistant);Resistance(Fire,Resistant);Resistance(Cold,Resistant);Resistance(Acid,Resistant);Resistance(Poison,Resistant);Resistance(Thunder,Resistant);Resistance(Lightning,Resistant);Resistance(Radiant,Resistant);Resistance(Necrotic,Resistant);Resistance(Psychic,Resistant)"
+// data "Boosts" "IgnoreLeaveAttackRange();Invisibility();IF(not Goon_CanSeeInvisible(false)):Disadvantage(AttackTarget);IF(not Goon_CanSeeInvisible(true)):Advantage(AttackRoll);DetectDisturbancesBlock(true); Resistance(Bludgeoning,Resistant);Resistance(Slashing,Resistant);Resistance(Piercing,Resistant);Resistance(Fire,Resistant);Resistance(Cold,Resistant);Resistance(Acid,Resistant);Resistance(Poison,Resistant);Resistance(Thunder,Resistant);Resistance(Lightning,Resistant);Resistance(Radiant,Resistant);Resistance(Necrotic,Resistant);Resistance(Psychic,Resistant)"
+data "Boosts" "IF(not Goon_CanSeeInvisible(false)):Disadvantage(AttackTarget);IF(not Goon_CanSeeInvisible(true)):Advantage(AttackRoll);Resistance(Bludgeoning,Resistant);Resistance(Slashing,Resistant);Resistance(Piercing,Resistant);Resistance(Fire,Resistant);Resistance(Cold,Resistant);Resistance(Acid,Resistant);Resistance(Poison,Resistant);Resistance(Thunder,Resistant);Resistance(Lightning,Resistant);Resistance(Radiant,Resistant);Resistance(Necrotic,Resistant);Resistance(Psychic,Resistant)"
 // data "StatusPropertyFlags" "UnavailableInActiveRoll;ExcludeFromPortraitRendering"
 data "StatusPropertyFlags" "UnavailableInActiveRoll;ExcludeFromPortraitRendering;DisableCombatlog"
 // data "RemoveConditions" ""

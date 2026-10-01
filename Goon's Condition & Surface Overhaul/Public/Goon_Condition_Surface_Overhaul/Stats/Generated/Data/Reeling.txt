@@ -1,5 +1,5 @@
 // ==================================== Prone ====================================
-// Bug Fix: MAG_ATTACK_DEBUFF_DURATION_TECHNICAL no longer recursively applies.
+// Bug Fix: MAG_ATTACK_DEBUFF_DURATION_TECHNICAL no longer recursively applies, causing the game to become unstable.
 
 // new entry "MAG_ATTACK_DEBUFF"
 // type "StatusData"

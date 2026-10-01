@@ -48,13 +48,38 @@
 	<!-- "SEE_INVISIBILITY" --> 
 	<content contentuid="hd3da4135g93e7g41edg99c3g11ffcbce5a3f" version="1">&lt;LSTag Type="Status" Tooltip="INVISIBLE"&gt;Invisible&lt;/LSTag&gt; creatures within [1] are revealed and cannot benefit from their invisibility against you.</content>
 	<!-- "SEE_INVISIBILITY_REVEAL" --> 
-	<content contentuid="h0f1395ebg634ag4301gbca5gecbc01bf2d97" version="1">This &lt;LSTag Type="Status" Tooltip="INVISIBLE"&gt;Invisible&lt;/LSTag&gt; entity's location is being revealed due to the effects of &lt;LSTag Type="Spell" Tooltip="Shout_SeeInvisibility"&gt;See Invisibility&lt;/LSTag&gt;. It retains the effects from being Invisible against those who cannot see it.</content>
+	<content contentuid="h0f1395ebg634ag4301gbca5gecbc01bf2d97" version="1">This &lt;LSTag Type="Status" Tooltip="INVISIBLE"&gt;Invisible&lt;/LSTag&gt; entity's location is being revealed due to the effects of &lt;LSTag Type="Spell" Tooltip="Shout_SeeInvisibility"&gt;See Invisibility&lt;/LSTag&gt;. It retains the effects from being Invisible against those who cannot see or otherwise sense its location.</content>
 	<!-- "Shout_SeeInvisibility_Seek" --> 
 	<content contentuid="ha06ae06dg1c88g43abgb807ga9f61ecca2b5" version="1">Search for nearby &lt;LSTag Type="Status" Tooltip="INVISIBLE"&gt;Invisible&lt;/LSTag&gt; creatures.</content>
 	<!-- "SEE_INVISIBILITY_SEEK" --> 
 	<content contentuid="h2a6ec662gd025g40f4g8f6cg16cc8f609c7a" version="1">Searching for nearby &lt;LSTag Type="Status" Tooltip="INVISIBLE"&gt;Invisible&lt;/LSTag&gt; creatures.</content>
-	<!-- "GREATER_INVISIBILITY" --> 
-	<content contentuid="h5a74ab78g6e2bg48ccga35bg544f21e9fb63" version="1">Entity has &lt;LSTag Tooltip="Advantage"&gt;Advantage&lt;/LSTag&gt; on &lt;LSTag Tooltip="AttackRoll"&gt;Attack Rolls&lt;/LSTag&gt;. Attack Rolls against it have &lt;LSTag Tooltip="Disadvantage"&gt;Disadvantage&lt;/LSTag&gt;.</content>
+
+	<!-- "GOON_GREATER_INVISIBILITY_REVEAL" --> 
+	<content contentuid="had7e7570g9b1fg4c1dga61ega040817b0c12" version="1">Noticed!</content>
+	<content contentuid="h719d0396g36eeg434fg9f14g9cf134d4c879" version="1">Your presence has been noticed, and enemies are actively seeking you out. Successfully &lt;LSTag Type="Spell" Tooltip="Shout_Hide"&gt;Hide&lt;/LSTag&gt; or start your turn out of earshot (about [1] away) to escape their notice.</content>
+
+	<!-- "GREATER_INVISIBILITY", "INVISIBLE", "INVISIBILITY", "SHADOWBLEND", "INVISIBILITY_SHADARKAI_GLOOMWEAVER",  "ONE_WITH_SHADOWS", "LOW_POLTERGEIST_INVISIBLE" --> 
+	<content contentuid="h5a74ab78g6e2bg48ccga35bg544f21e9fb63" version="1">Entity has &lt;LSTag Tooltip="Advantage"&gt;Advantage&lt;/LSTag&gt; on &lt;LSTag Tooltip="AttackRoll"&gt;Attack Rolls&lt;/LSTag&gt; against targets who cannot see or otherwise sense its location. Entities that cannot discern the invisible entity's location have &lt;LSTag Tooltip="Disadvantage"&gt;Disadvantage&lt;/LSTag&gt; on &lt;LSTag Tooltip="AttackRoll"&gt;Attack Rolls&lt;/LSTag&gt; against it.</content>
+
+	<!-- "Shout_HideInPlainSight" --> 
+	<content contentuid="ha42aa98dg2ddcg4dbagb07dgff774cf337a6" version="1">Camouflage yourself with your environment to become &lt;LSTag Type="Status" Tooltip="INVISIBILITY"&gt;Invisible&lt;/LSTag&gt; and gain a +[1] bonus to &lt;LSTag Tooltip="Stealth"&gt;Stealth&lt;/LSTag&gt; &lt;LSTag Tooltip="SkillCheck"&gt;Skill Checks&lt;/LSTag&gt;, as long as you stand still.</content>
+	<!-- "HIDE_IN_PLAIN_SIGHT" --> 
+	<content contentuid="h78a9985dg2cf3g4853gb5d3g1093d55f1a6f" version="1">Entity has &lt;LSTag Tooltip="Advantage"&gt;Advantage&lt;/LSTag&gt; on &lt;LSTag Tooltip="AttackRoll"&gt;Attack Rolls&lt;/LSTag&gt; against targets who cannot see or otherwise sense its location. Entities that cannot discern the invisible entity's location have &lt;LSTag Tooltip="Disadvantage"&gt;Disadvantage&lt;/LSTag&gt; on &lt;LSTag Tooltip="AttackRoll"&gt;Attack Rolls&lt;/LSTag&gt; against it.&lt;br&gt;Additionally, it has a +[1] bonus to &lt;LSTag Tooltip="Stealth"&gt;Stealth&lt;/LSTag&gt; &lt;LSTag Tooltip="SkillCheck"&gt;Skill Checks&lt;/LSTag&gt;.</content>
+
+	<!-- "Interrupt_MistyEscape" --> 
+	<content contentuid="h1af0940bg16eeg4393g9e4cgde0bc66098bc" version="1">Upon taking damage, become &lt;LSTag Type="Status" Tooltip="MISTY_ESCAPE_INVISIBLE"&gt;Invisible&lt;/LSTag&gt;. On your next turn, you can cast &lt;LSTag Type="Spell" Tooltip="Target_MistyStep"&gt;Misty Step&lt;/LSTag&gt;, though this will break your invisibility.</content>
+	<!-- "Shout_Invisibility_MistyEscape" --> 
+	<content contentuid="h0e10ccadg50a1g4b0cgaa59g39488605f7ce" version="1">Turn &lt;LSTag Type="Status" Tooltip="MISTY_ESCAPE_INVISIBLE"&gt;Invisible&lt;/LSTag&gt; after casting &lt;LSTag Type="Spell" Tooltip="Target_Misty_Step"&gt;Misty Step&lt;/LSTag&gt;.</content>
+
+	<!-- "Shout_CloakOfShadows" --> 
+	<content contentuid="h3e687d6fg0811g48c0g9b03gfe6682217a71" version="1">Wrap yourself in shadows to become &lt;LSTag Type="Status" Tooltip="CLOAK_OF_SHADOWS"&gt;Invisible&lt;/LSTag&gt;.</content>
+	<!-- "Shout_CloakOfShadows_Monk" --> 
+	<content contentuid="hd070d3b0g6074g45cbga90bgac6b8118db11" version="1">Wrap yourself in shadows to become &lt;LSTag Type="Status" Tooltip="CLOAK_OF_SHADOWS_MONK"&gt;Invisible&lt;/LSTag&gt; if you are obscured.</content>
+
+	<!-- "MAG_INVISIBLE_WEAPON", "MAG_INVISIBLE_WEAPON_BUFF", "MAG_INVISIBLE_WEAPON_BUFF_TECHNICAL" --> 
+	<content contentuid="h6823dc96g179bg4864gad56g215e2a9eb9ae" version="1">Affected entity cannot be &lt;LSTag Type="Status" Tooltip="DISARMED"&gt;Disarmed&lt;/LSTag&gt;. It has &lt;LSTag Tooltip="Advantage"&gt;Advantage&lt;/LSTag&gt; on &lt;LSTag Tooltip="AttackRoll"&gt;Attack Rolls&lt;/LSTag&gt;. The number you need to &lt;LSTag Tooltip="AttackRoll"&gt;roll&lt;/LSTag&gt; a &lt;LSTag Tooltip="CriticalHit"&gt;Critical Hit&lt;/LSTag&gt; while attacking is reduced by 1. This effect can stack.</content>
+	<!-- "EMPTY_BODY" --> 
+	<content contentuid="h80012798g21f6g41f2gbf21ga0ffdf50d099" version="1">This entity is &lt;LSTag Type="Status" Tooltip="INVISIBILITY"&gt;Invisible&lt;/LSTag&gt; and &lt;LSTag Type="Status" Tooltip="RESISTANCE"&gt;Resistant&lt;/LSTag&gt; to all damage except[1].</content>
 
 	<!-- "MAG_MOMENTUM" --> 
 	<content contentuid="h76a68b74ga5beg4d79g8fcfg39df423286ae" version="1">Spurred on by a sense of urgency. The affected entity's &lt;LSTag Tooltip="MovementSpeed"&gt;movement speed&lt;/LSTag&gt; has increased by [1] per remaining duration of this effect.&lt;br&gt;&lt;br&gt;Removed when &lt;LSTag Type="Status" Tooltip="RESTRAINED"&gt;Restrained&lt;/LSTag&gt;, &lt;LSTag Type="Status" Tooltip="INCAPACITATED"&gt;Incapacitated&lt;/LSTag&gt;, &lt;LSTag Type="Status" Tooltip="PRONE"&gt;Prone&lt;/LSTag&gt;, or &lt;LSTag Type="Status" Tooltip="SLOW"&gt;Slowed&lt;/LSTag&gt;.</content>

@@ -8,9 +8,9 @@
 // I never tried to create the component myself though, so i'm not sure you can
 
 // TODO: Check my AoO functions to ensure they support seen conditions not having IgnoreLeaveAttackRange.
-// TODO: RemoveEvents consistency.
-// TODO: Description consistency.
+// TODO: Obscurity custom LSTag passive or something.
 // TODO: There was definitely some sort of race condition going on with the revealing, where RemoveStatus(SG_Invisible) can fire on the wrong thing... or is it not? Because even so the status should hand off its duration and apply the inverse, I'm not sure what's missing. It's a semi-rare occurance anyway I guess.
+// TODO: Take the Noticed! mechanic and expand on it for things like moving past enemies, lockpicking, moving items, etc. for a more thematic experience instead of binary rulesets.
 
 // ==================================== See Invisibility ====================================
 
@@ -23,12 +23,12 @@ using "Shout_SeeInvisibility"
 // data "AIFlags" "UseAsSeekActionOnly"
 // data "SpellProperties" "ApplyStatus(SEE_INVISIBILITY,100,-1)"
 // data "AreaRadius" "9"
-data "AreaRadius" "18"
+data "AreaRadius" ""
 // data "TargetConditions" "Self()"
 // data "Icon" "Spell_Divination_SeeInvisibility"
-// See Invisibility
+// // See Invisibility
 // data "DisplayName" "hd2d06133g5277g44f8ga6dbg82bef1117d44;2"
-// Become able to see &lt;LSTag Type="Status" Tooltip="INVISIBLE"&gt;Invisible&lt;/LSTag&gt; creatures, and possibly reveal them to others.
+// // Become able to see &lt;LSTag Type="Status" Tooltip="INVISIBLE"&gt;Invisible&lt;/LSTag&gt; creatures, and possibly reveal them to others.
 // data "Description" "ha4544864g1c5eg4d1ag9c19gdec71cfb899c;3"
 // data "TooltipAttackSave" "Dexterity"
 data "TooltipAttackSave" ""
@@ -50,13 +50,14 @@ new entry "SEE_INVISIBILITY"
 type "StatusData"
 data "StatusType" "BOOST"
 using "SEE_INVISIBILITY"
-// See Invisibility
+// // See Invisibility
 // data "DisplayName" "h5ad4a60dga70fg45efg9efbge4e61ca4e073;2"
-// Can see &lt;LSTag Type="Status" Tooltip="INVISIBLE"&gt;Invisible&lt;/LSTag&gt; creatures within [1]. Creatures must succeed a Dexterity &lt;LSTag Tooltip="SavingThrow"&gt;Saving Throw&lt;/LSTag&gt; or lose their invisibility.
+// // Can see &lt;LSTag Type="Status" Tooltip="INVISIBLE"&gt;Invisible&lt;/LSTag&gt; creatures within [1]. Creatures must succeed a Dexterity &lt;LSTag Tooltip="SavingThrow"&gt;Saving Throw&lt;/LSTag&gt; or lose their invisibility.
 // data "Description" "h68bd4926g8e1ag4de6gbdccgb01be0a5379b;3"
-// &lt;LSTag Type="Status" Tooltip="INVISIBLE"&gt;Invisible&lt;/LSTag&gt; creatures within [1] are revealed and cannot benefit from their invisibility against you.
+// // &lt;LSTag Type="Status" Tooltip="INVISIBLE"&gt;Invisible&lt;/LSTag&gt; creatures within [1] are revealed and cannot benefit from their invisibility against you.
 data "Description" "hd3da4135g93e7g41edg99c3g11ffcbce5a3f;1"
 // data "DescriptionParams" "Distance(9)"
+data "DescriptionParams" "Distance(18)"
 // data "Icon" "Spell_Divination_SeeInvisibility"
 // data "StackId" "SEE_INVISIBILITY"
 // data "AuraRadius" "9"
@@ -73,17 +74,17 @@ new entry "SEE_INVISIBILITY_REVEAL"
 type "StatusData"
 data "StatusType" "BOOST"
 using "SEE_INVISIBILITY_REVEAL"
-// Revealed
+// // Revealed
 // data "DisplayName" "h02dada8bgfc7dg4049gaa19g640e62c470a4;3"
-// Affected entity lost its &lt;LSTag Type="Status" Tooltip="INVISIBLE"&gt;Invisibility&lt;/LSTag&gt; due to the effects of &lt;LSTag Type="Spell" Tooltip="Shout_SeeInvisibility"&gt;See Invisibility&lt;/LSTag&gt;.
+// // Affected entity lost its &lt;LSTag Type="Status" Tooltip="INVISIBLE"&gt;Invisibility&lt;/LSTag&gt; due to the effects of &lt;LSTag Type="Spell" Tooltip="Shout_SeeInvisibility"&gt;See Invisibility&lt;/LSTag&gt;.
 // data "Description" "h132a2200gca28g4571g9032g25f626cf31a1;3"
-// This &lt;LSTag Type="Status" Tooltip="INVISIBLE"&gt;Invisible&lt;/LSTag&gt; entity's location is being revealed due to the effects of &lt;LSTag Type="Spell" Tooltip="Shout_SeeInvisibility"&gt;See Invisibility&lt;/LSTag&gt;. It retains the effects from being Invisible against those who cannot see it.
+// // This &lt;LSTag Type="Status" Tooltip="INVISIBLE"&gt;Invisible&lt;/LSTag&gt; entity's location is being revealed due to the effects of &lt;LSTag Type="Spell" Tooltip="Shout_SeeInvisibility"&gt;See Invisibility&lt;/LSTag&gt;. It retains the effects from being Invisible against those who cannot see or otherwise sense its location.
 data "Description" "h0f1395ebg634ag4301gbca5gecbc01bf2d97;1"
 // data "Icon" "Spell_Divination_SeeInvisibility"
+data "Icon" "statIcons_Noticed"
 // data "StackId" "SEE_INVISIBILITY_REVEAL"
 data "TickType" "EndTurn"
 // data "AuraFlags" "CanAffectInvisibleItems"
-data "AuraFlags" "CanAffectInvisibleItems;ShouldCheckLOS"
 // data "OnApplyFunctors" "RemoveStatus(SG_Invisible)"
 data "OnApplyFunctors" "IF(not Goon_IsInvisibleSeen()):RemoveStatus(SG_Invisible)"
 data "RemoveEvents" "OnStatusRemoved"
@@ -164,6 +165,7 @@ data "AuraStatuses" "TARGET:IF(Goon_CanObserverRevealTarget(true,true)):ApplySta
 // data "StatusPropertyFlags" "DisableOverhead;DisablePortraitIndicator;DisableCombatlog;IgnoreResting"
 
 // ==================================== Invisible ====================================
+// Changes: Revealed when attacking or casting instead of when dealing any damage.
 
 new entry "Target_Invisibility"
 type "SpellData"
@@ -175,16 +177,20 @@ using "Target_Invisibility"
 // data "TargetRadius" "1.5"
 // data "TargetConditions" "Character() and not HasStatus('FAERIE_FIRE')  and not IsImmuneToStatus('SG_Invisible')"
 // data "Icon" "Spell_Illusion_Invisibility"
-// Invisibility
+// // Invisibility
 // data "DisplayName" "hcf22dcf2g26c6g4dffg98f8gc7c84f36124c;1"
-// Touch a creature to turn it &lt;LSTag Type="Status" Tooltip="INVISIBILITY"&gt;Invisible&lt;/LSTag&gt;. Attacks against it have &lt;LSTag Tooltip="Disadvantage"&gt;Disadvantage&lt;/LSTag&gt;. It attacks with &lt;LSTag Tooltip="Advantage"&gt;Advantage&lt;/LSTag&gt;.
+// // Touch a creature to turn it &lt;LSTag Type="Status" Tooltip="INVISIBILITY"&gt;Invisible&lt;/LSTag&gt;. Attacks against it have &lt;LSTag Tooltip="Disadvantage"&gt;Disadvantage&lt;/LSTag&gt;. It attacks with &lt;LSTag Tooltip="Advantage"&gt;Advantage&lt;/LSTag&gt;.
 // data "Description" "hf30493d0g1858g4f2eg8c77ga32d930bdd56;3"
-// Invisibility ends early if the invisible entity attacks, casts another spell, interacts with an object, takes an action or bonus action, or is damaged.
+// // Invisibility ends early if the invisible entity attacks, casts another spell, interacts with an object, takes an action or bonus action, or is damaged.
 // data "ExtraDescription" "hbd89356ag64e6g4ee5gb1a2ga259e0603647;2"
 data "ExtraDescription" ""
 // data "TooltipStatusApply" "ApplyStatus(INVISIBILITY,100,10)"
+// // Affect an additional target per level.
 // data "TooltipUpcastDescription" "04cc3403-f67a-4747-b49e-a1802cc7a6ad"
+// // &lt;LSTag Type="Image" Info="SoftWarning"/&gt; Condition ends early if the creature attacks or casts a spell.
 // data "TooltipPermanentWarnings" "184019c7-770a-4594-a7dd-ec616fe940fd"
+// // &lt;LSTag Type="Image" Info="SoftWarning"/&gt; Condition ends early if the entity attacks or casts a spell.
+data "TooltipPermanentWarnings" "3541c8b9-688f-459d-842f-5d7760b89424"
 // data "CastSound" "Spell_Cast_Utility_Invisibility_L1to3"
 // data "TargetSound" "Spell_Impact_Utility_Invisibility_L1to3"
 // data "VocalComponentSound" "Vocal_Component_Invisibility"
@@ -204,10 +210,14 @@ new entry "INVISIBLE"
 type "StatusData"
 data "StatusType" "INVISIBLE"
 using "INVISIBLE"
-// Invisible
+// // Invisible
 // data "DisplayName" "hfbb59857g081eg4da0gbcf0gaa2432cd7a28;1"
-// Has &lt;LSTag Tooltip="Advantage"&gt;Advantage&lt;/LSTag&gt; on &lt;LSTag Tooltip="AttackRoll"&gt;Attack Rolls&lt;/LSTag&gt; and imposes &lt;LSTag Tooltip="Disadvantage"&gt;Disadvantage&lt;/LSTag&gt; on enemy Attack Rolls. &lt;br&gt;&lt;Br&gt;Invisibility ends early if the invisible entity attacks, casts another spell, takes an action, or takes damage.
+// // Has &lt;LSTag Tooltip="Advantage"&gt;Advantage&lt;/LSTag&gt; on &lt;LSTag Tooltip="AttackRoll"&gt;Attack Rolls&lt;/LSTag&gt; and imposes &lt;LSTag Tooltip="Disadvantage"&gt;Disadvantage&lt;/LSTag&gt; on enemy Attack Rolls. &lt;br&gt;&lt;Br&gt;Invisibility ends early if the invisible entity attacks, casts another spell, takes an action, or takes damage.
 // data "Description" "haabf0a81ge2d4g43a8gac70g95c1a7a6fc29;4"
+// // Entity has &lt;LSTag Tooltip="Advantage"&gt;Advantage&lt;/LSTag&gt; on &lt;LSTag Tooltip="AttackRoll"&gt;Attack Rolls&lt;/LSTag&gt; against targets who cannot see or otherwise sense its location. Entities that cannot discern the invisible entity's location have &lt;LSTag Tooltip="Disadvantage"&gt;Disadvantage&lt;/LSTag&gt; on &lt;LSTag Tooltip="AttackRoll"&gt;Attack Rolls&lt;/LSTag&gt; against it.
+data "Description" "h5a74ab78g6e2bg48ccga35bg544f21e9fb63;1"
+// // &lt;LSTag Type="Image" Info="SoftWarning"/&gt; Condition ends early if the entity attacks or casts a spell.
+data "TooltipPermanentWarnings" "3541c8b9-688f-459d-842f-5d7760b89424"
 // data "Icon" "Status_Invisible"
 // data "FormatColor" "White"
 // data "MaterialType" "Replacement"
@@ -240,15 +250,48 @@ data "StatusPropertyFlags" "UnavailableInActiveRoll;ExcludeFromPortraitRendering
 data "OnRemoveFunctors" "IF(Goon_InvisibilityOnRemoveFunctors(false)):ApplyStatus(INVISIBLE,100,Target.GOON_INVISIBLE_SEEN.Duration,,,,,true)"
 
 // ==================================== Invisibility - Invisible 
+// Changes: Revealed when attacking or casting instead of when dealing any damage.
+
+new entry "Shout_Invisibility_Imp"
+type "SpellData"
+data "SpellType" "Shout"
+using "Shout_Invisibility_Imp"
+// data "SpellProperties" "AI_IGNORE:ApplyStatus(INVISIBILITY,100,-1);AI_ONLY:ApplyStatus(INVISIBILITY,100,2);"
+// data "TargetConditions" "Self() and not HasStatus('FAERIE_FIRE')"
+// data "Icon" "Action_Imp_Invisibility"
+// // Invisibility
+// data "DisplayName" "ha3341df2g9635g4956g952egb7a2ee3366c4;1"
+// // Become Invisible.
+// data "Description" "h11c400b0ge585g4c68gb492g26b1fe49e5d1;6"
+// data "TooltipStatusApply" "ApplyStatus(INVISIBILITY,100,-1)"
+// // &lt;LSTag Type="Image" Info="SoftWarning"/&gt; Invisibility ends early if you attack, cast another spell, take an action, or take damage.
+// data "TooltipPermanentWarnings" "d6bcda06-80ef-4889-98b9-43b886f77bd6"
+// // &lt;LSTag Type="Image" Info="SoftWarning"/&gt; Condition ends early if the entity attacks or casts a spell.
+data "TooltipPermanentWarnings" "3541c8b9-688f-459d-842f-5d7760b89424"
+// data "CastSound" "Spell_Cast_Utility_Invisibility_L1to3"
+// data "TargetSound" "Spell_Impact_Utility_Invisibility_L1to3"
+// data "CastTextEvent" "Cast"
+// data "UseCosts" "ActionPoint:1"
+// data "SpellAnimation" "6aae7c32-ce4b-4ad3-ad9b-f5a8c354e3cf,,;f3a26975-5aab-4fd6-989a-2b2515b57139,,;9942c019-92d2-4107-b6f8-35fd8df22c75,,;1a11f959-abd1-4fb9-a127-73e420f55586,,;307b18c3-f79b-4327-b296-1853334c0475,,;,,;,,;,,;,,"
+// data "VerbalIntent" "Utility"
+// data "SpellFlags" "IsConcentration"
+// data "SpellAnimationIntentType" "Aggressive"
+// data "PrepareEffect" "b1c774c1-9ad2-426b-9240-ba83ad2efc70"
+// data "CastEffect" "fadb15d3-6175-4334-be28-3160a640e799"
+// data "Sheathing" "DontChange"
 
 new entry "INVISIBILITY"
 type "StatusData"
 data "StatusType" "INVISIBLE"
 using "INVISIBILITY"
-// Invisible
+// // Invisible
 // data "DisplayName" "h8d8bf77cg9365g4f6eg920ag4ee1d1cdcfbd;4"
-// Has &lt;LSTag Tooltip="Advantage"&gt;Advantage&lt;/LSTag&gt; on &lt;LSTag Tooltip="AttackRoll"&gt;Attack Rolls&lt;/LSTag&gt; and imposes &lt;LSTag Tooltip="Disadvantage"&gt;Disadvantage&lt;/LSTag&gt; on enemy Attack Rolls. &lt;br&gt;&lt;Br&gt;Invisibility ends early if the invisible entity attacks, casts another spell, interacts with an object, takes an action or bonus action, or is damaged.
+// // Has &lt;LSTag Tooltip="Advantage"&gt;Advantage&lt;/LSTag&gt; on &lt;LSTag Tooltip="AttackRoll"&gt;Attack Rolls&lt;/LSTag&gt; and imposes &lt;LSTag Tooltip="Disadvantage"&gt;Disadvantage&lt;/LSTag&gt; on enemy Attack Rolls. &lt;br&gt;&lt;Br&gt;Invisibility ends early if the invisible entity attacks, casts another spell, interacts with an object, takes an action or bonus action, or is damaged.
 // data "Description" "h9000689eg9754g4481g9074ga513f6613ec9;6"
+// // Entity has &lt;LSTag Tooltip="Advantage"&gt;Advantage&lt;/LSTag&gt; on &lt;LSTag Tooltip="AttackRoll"&gt;Attack Rolls&lt;/LSTag&gt; against targets who cannot see or otherwise sense its location. Entities that cannot discern the invisible entity's location have &lt;LSTag Tooltip="Disadvantage"&gt;Disadvantage&lt;/LSTag&gt; on &lt;LSTag Tooltip="AttackRoll"&gt;Attack Rolls&lt;/LSTag&gt; against it.
+data "Description" "h5a74ab78g6e2bg48ccga35bg544f21e9fb63;1"
+// // &lt;LSTag Type="Image" Info="SoftWarning"/&gt; Condition ends early if the entity attacks or casts a spell.
+data "TooltipPermanentWarnings" "3541c8b9-688f-459d-842f-5d7760b89424"
 // data "Icon" "Spell_Illusion_Invisibility"
 // data "StackId" "INVISIBILITY"
 // data "StackPriority" "4"
@@ -288,15 +331,18 @@ using "Target_Invisibility_Greater"
 // data "TargetRadius" "1.5"
 // data "TargetConditions" "Character() and not HasStatus('FAERIE_FIRE')  and not IsImmuneToStatus('SG_Invisible')"
 // data "Icon" "Spell_Illusion_GreaterInvisibility"
-// Greater Invisibility
+// // Greater Invisibility
 // data "DisplayName" "ha31731cdg4408g4615g9857gc8bb1059e75f;2"
-// Turn a creature &lt;LSTag Type="Status" Tooltip="GREATER_INVISIBILITY"&gt;Invisible&lt;/LSTag&gt;. Attacks against it have &lt;LSTag Tooltip="Disadvantage"&gt;Disadvantage&lt;/LSTag&gt;. It attacks with &lt;LSTag Tooltip="Advantage"&gt;Advantage&lt;/LSTag&gt;.
+// // Turn a creature &lt;LSTag Type="Status" Tooltip="GREATER_INVISIBILITY"&gt;Invisible&lt;/LSTag&gt;. Attacks against it have &lt;LSTag Tooltip="Disadvantage"&gt;Disadvantage&lt;/LSTag&gt;. It attacks with &lt;LSTag Tooltip="Advantage"&gt;Advantage&lt;/LSTag&gt;.
 // data "Description" "h886bd784gbaefg45a8gb6e3ga9b04b7e07fd;5"
-// Invisibility breaks when you fail increasingly harder Stealth &lt;LSTag Tooltip="AbilityCheck"&gt;Checks&lt;/LSTag&gt; on attacking, casting spells or interacting with items.
+// // Invisibility breaks when you fail increasingly harder Stealth &lt;LSTag Tooltip="AbilityCheck"&gt;Checks&lt;/LSTag&gt; on attacking, casting spells or interacting with items.
 // data "ExtraDescription" "h7aa27b7ag259bg4394g97a7g5fd5100be99b;1"
 data "ExtraDescription" ""
 // data "TooltipStatusApply" "ApplyStatus(GREATER_INVISIBILITY,100,10)"
+// // Casting this spell at a higher level doesn't grant any additional benefits.
 // data "TooltipUpcastDescription" "6ff1780a-855a-414c-a8bf-811251537206"
+// // &lt;LSTag Type="Image" Info="SoftWarning"/&gt; Condition can only be removed through magical means.
+data "TooltipPermanentWarnings" "f7728ebc-eb2d-427e-afbf-8d55c9676965"
 // data "CastSound" "Spell_Cast_Utility_GreaterInvisibility_L1to3"
 // data "TargetSound" "Spell_Impact_Utility_GreaterInvisibility_L1to3"
 // data "VocalComponentSound" "Vocal_Component_Invisibility"
@@ -317,12 +363,16 @@ type "StatusData"
 data "StatusType" "INVISIBLE"
 // using "INVISIBILITY"
 using "GREATER_INVISIBILITY"
-// Greater Invisibility
+// // Greater Invisibility
 // data "DisplayName" "h17d32d34g187eg46b1g938fg20d567df6eb4;2"
-// Entity has &lt;LSTag Tooltip="Advantage"&gt;Advantage&lt;/LSTag&gt; on &lt;LSTag Tooltip="AttackRoll"&gt;Attack Rolls&lt;/LSTag&gt;. Attack Rolls against it have &lt;LSTag Tooltip="Disadvantage"&gt;Disadvantage&lt;/LSTag&gt;. &lt;br&gt;&lt;br&gt;When interacting with items, casting spells or attacking, the entity needs to succeed a Stealth &lt;LSTag Tooltip="AbilityCheck"&gt;Check&lt;/LSTag&gt; to maintain Invisibility. The check becomes harder with each successful attempt.
+// // Entity has &lt;LSTag Tooltip="Advantage"&gt;Advantage&lt;/LSTag&gt; on &lt;LSTag Tooltip="AttackRoll"&gt;Attack Rolls&lt;/LSTag&gt;. Attack Rolls against it have &lt;LSTag Tooltip="Disadvantage"&gt;Disadvantage&lt;/LSTag&gt;. &lt;br&gt;&lt;br&gt;When interacting with items, casting spells or attacking, the entity needs to succeed a Stealth &lt;LSTag Tooltip="AbilityCheck"&gt;Check&lt;/LSTag&gt; to maintain Invisibility. The check becomes harder with each successful attempt.
 // data "Description" "ha4468dd2gdefeg4a52ga0c7g91ae57aef8a3;5"
-// Entity has &lt;LSTag Tooltip="Advantage"&gt;Advantage&lt;/LSTag&gt; on &lt;LSTag Tooltip="AttackRoll"&gt;Attack Rolls&lt;/LSTag&gt;. Attack Rolls against it have &lt;LSTag Tooltip="Disadvantage"&gt;Disadvantage&lt;/LSTag&gt;.
+// // Entity has &lt;LSTag Tooltip="Advantage"&gt;Advantage&lt;/LSTag&gt; on &lt;LSTag Tooltip="AttackRoll"&gt;Attack Rolls&lt;/LSTag&gt; against targets who cannot see or otherwise sense its location. Entities that cannot discern the invisible entity's location have &lt;LSTag Tooltip="Disadvantage"&gt;Disadvantage&lt;/LSTag&gt; on &lt;LSTag Tooltip="AttackRoll"&gt;Attack Rolls&lt;/LSTag&gt; against it.
 data "Description" "h5a74ab78g6e2bg48ccga35bg544f21e9fb63;1"
+// // &lt;LSTag Type="Image" Info="SoftWarning"/&gt; Condition ends early if the entity attacks or casts a spell.
+// data "TooltipPermanentWarnings" "3541c8b9-688f-459d-842f-5d7760b89424"
+// // &lt;LSTag Type="Image" Info="SoftWarning"/&gt; Condition can only be removed through magical means.
+data "TooltipPermanentWarnings" "f7728ebc-eb2d-427e-afbf-8d55c9676965"
 // data "Icon" "Spell_Illusion_GreaterInvisibility"
 // data "StackPriority" "5"
 // data "Boosts" "IgnoreLeaveAttackRange();Invisibility();IF(not Goon_CanSeeInvisible(false)):Disadvantage(AttackTarget);IF(not Goon_CanSeeInvisible(true)):Advantage(AttackRoll);DetectDisturbancesBlock(true)"
@@ -348,10 +398,10 @@ data "StatsFunctors" "ApplyStatus(SELF,GOON_GREATER_INVISIBILITY_REVEAL,100,-1)"
 new entry "GOON_GREATER_INVISIBILITY_REVEAL"
 type "StatusData"
 data "StatusType" "BOOST"
-// Noticed!
-data "DisplayName" "h96e6a3f5g6649g4418g9076ga32dcf52fc08;1"
-// Your presence has been noticed, and enemies are actively seeking you out. Successfully &lt;LSTag Type="Spell" Tooltip="Shout_Hide"&gt;Hide&lt;/LSTag&gt; or start your turn out of earshot (about [1] away) to escape their notice.
-data "Description" "h0d3ee0f7g66e3g49eagbf53g7643a094fd63;1"
+// // Noticed!
+data "DisplayName" "had7e7570g9b1fg4c1dga61ega040817b0c12;1"
+// // Your presence has been noticed, and enemies are actively seeking you out. Successfully &lt;LSTag Type="Spell" Tooltip="Shout_Hide"&gt;Hide&lt;/LSTag&gt; or start your turn out of earshot (about [1] away) to escape their notice.
+data "Description" "h719d0396g36eeg434fg9f14g9cf134d4c879;1"
 data "DescriptionParams" "Distance(10.5)"
 data "Icon" "statIcons_Noticed"
 data "StackId" "GOON_GREATER_INVISIBILITY_REVEAL"
@@ -376,18 +426,67 @@ data "StatusPropertyFlags" "UnavailableInActiveRoll;ExcludeFromPortraitRendering
 data "OnRemoveFunctors" "IF(Goon_InvisibilityOnRemoveFunctors(false,true)):ApplyStatus(GREATER_INVISIBILITY,100,Target.GOON_GREATER_INVISIBILITY_SEEN.Duration,,,,,true)"
 
 // ==================================== Shadow Blend
-// Changes: Removed on attacking or casting instead of when dealing any damage.
-// TODO: OnDamaged removal. Except it doesn't work as a status event.
+// Changes: Revealed when attacking or casting instead of when dealing any damage.
+// TODO: OnDamaged removal passive as there's no status event for it. It would count as external removal and needs testing, so I'll leave it just for the second.
+// TODO: ShadowyRetreat's conditions line almost killed me just looking at the mfer.
+
+// new entry "ShadowyRetreat"
+// type "PassiveData"
+// // Shadowblend
+// data "DisplayName" "h5fca4903g537dg488cg87b1g63a762a6d64f;2"
+// // While Lightly or Heavily Obscured, this creature gains the ability to blend with shadows and become &lt;LSTag Type="Status" Tooltip="INVISIBILITY"&gt;Invisible&lt;/LSTag&gt;.
+// data "Description" "hea75adfagec2eg4985ga1c1g0b3acf1201d6;4"
+// data "Icon" "PassiveFeature_Generic_Invisibility"
+// data "Properties" "Highlighted"
+// data "StatsFunctorContext" "OnMovedDistance;OnObscurityChanged"
+// data "Conditions" "(((context.HasContextFlag(StatsFunctorContext.OnMovedDistance)) and (not HasObscuredState(ObscuredState.Clear,context.Source) or HasObscuredState(ObscuredState.HeavilyObscured,context.Source) or HasObscuredState(ObscuredState.LightlyObscured,context.Source)) and not HasStatus('SHADOWBLEND', context.Source) and Combat(context.Source)) or (context.HasContextFlag(StatsFunctorContext.OnObscurityChanged) and (not HasObscuredState(ObscuredState.Clear) or HasObscuredState(ObscuredState.HeavilyObscured) or HasObscuredState(ObscuredState.LightlyObscured)) and not HasStatus('SHADOWBLEND') and Combat())) and not HasStatus('SEE_INVISIBILITY_REVEAL') and not HasStatus('FAERIE_FIRE') and not HasStatus('BRANDING_SMITE')"
+// data "StatsFunctors" "IF(context.HasContextFlag(StatsFunctorContext.OnMovedDistance)):ApplyStatus(SELF,SHADOWBLEND,100,-1);IF(context.HasContextFlag(StatsFunctorContext.OnMovedDistance)):ApplyStatus(SELF,SHADOWBLEND_REMOVE_HELPER,100,-1);IF(context.HasContextFlag(StatsFunctorContext.OnObscurityChanged)):ApplyStatus(SHADOWBLEND,100,-1);IF(context.HasContextFlag(StatsFunctorContext.OnObscurityChanged)):ApplyStatus(SHADOWBLEND_REMOVE_HELPER,100,-1);CreateExplosion(Projectile_Shadowblend_Effect);"
+
+// Unused.
+new entry "Shout_ShadowBlend"
+type "SpellData"
+data "SpellType" "Shout"
+// using "Shout_ActionSurge"
+using "Shout_ShadowBlend"
+// data "Cooldown" ""
+// data "AIFlags" ""
+// data "SpellProperties" "ApplyStatus(SHADOWBLEND,100,2)"
+// data "TargetConditions" "Self()"
+// data "Icon" "PassiveFeature_Generic_Darkness"
+// // Shadow Blend
+// data "DisplayName" "h45e1273fg3f0cg4f94g8f1cg41561387c159;1"
+// // Fold yourself in shadow to become &lt;LSTag Type="Status" Tooltip="INVISIBILITY"&gt;Invisible&lt;/LSTag&gt;. 
+// data "Description" "h85a714dag9a78g4791gad95g670f3f578c0a;2"
+// // &lt;LSTag Type="Status" Tooltip="INVISIBILITY"&gt;Invisibility&lt;/LSTag&gt; stops once you perform an &lt;LSTag Tooltip="Action"&gt;action&lt;/LSTag&gt;, take damage, or step into bright light.
+// data "ExtraDescription" "h367314e4gf78ag4597g81e5g2ec2f45bd328;1"
+data "ExtraDescription" ""
+// data "TooltipStatusApply" "ApplyStatus(SHADOWBLEND,100,2)"
+// data "TooltipPermanentWarnings" "cfc217d1-ee2a-45a3-b3ff-b0e3a64a61e3"
+// data "CastTextEvent" "Cast"
+// data "UseCosts" "BonusActionPoint:1"
+// data "SpellAnimation" "18dc0b72-bb98-4adb-a096-28efe713f9ee,,;f9d2d8e0-cf00-4054-8466-88a5307f84c1,,;2cd5b0c0-15d7-4dcd-84e6-eeabd74b4acd,,;a5774c36-cd17-42ff-9c80-58626e27fefb,,;b1c8d2b1-9749-4fbf-8507-bb2be0a9afe2,,;,,;,,;,,;,,"
+// data "WeaponTypes" ""
+// data "SpellFlags" "IgnoreSilence;IsEnemySpell"
+// data "SpellAnimationIntentType" "Action"
+// data "Requirements" ""
+// data "MemoryCost" ""
+// data "PrepareEffect" "d7dd09d8-9762-4221-9b04-70796ed22172"
+// data "CastEffect" "6de4e680-0dc3-4756-baaf-206a79b759dc"
+// data "Sheathing" "Sheathed"
 
 new entry "SHADOWBLEND"
 type "StatusData"
 data "StatusType" "INVISIBLE"
 // using "INVISIBLE"
 using "SHADOWBLEND"
-// Shadow Blend
+// // Shadow Blend
 // data "DisplayName" "hf4549f34g54f1g4c3dg9d9dg3864dce038c7;1"
-// Affected entity is invisible. It has &lt;LSTag Tooltip="Advantage"&gt;Advantage&lt;/LSTag&gt; on &lt;LSTag Tooltip="AttackRoll"&gt;Attack Rolls&lt;/LSTag&gt; and imposes &lt;LSTag Tooltip="Disadvantage"&gt;Disadvantage&lt;/LSTag&gt; on enemy Attack Rolls. &lt;br&gt;&lt;Br&gt;Invisibility ends early if the invisible entity moves, attacks, casts another spell, takes an action, or takes damage.
+// // Affected entity is invisible. It has &lt;LSTag Tooltip="Advantage"&gt;Advantage&lt;/LSTag&gt; on &lt;LSTag Tooltip="AttackRoll"&gt;Attack Rolls&lt;/LSTag&gt; and imposes &lt;LSTag Tooltip="Disadvantage"&gt;Disadvantage&lt;/LSTag&gt; on enemy Attack Rolls. &lt;br&gt;&lt;Br&gt;Invisibility ends early if the invisible entity moves, attacks, casts another spell, takes an action, or takes damage.
 // data "Description" "h25178ac5g8e9bg44b3gbb68g20772ce1f168;2"
+// // Entity has &lt;LSTag Tooltip="Advantage"&gt;Advantage&lt;/LSTag&gt; on &lt;LSTag Tooltip="AttackRoll"&gt;Attack Rolls&lt;/LSTag&gt; against targets who cannot see or otherwise sense its location. Entities that cannot discern the invisible entity's location have &lt;LSTag Tooltip="Disadvantage"&gt;Disadvantage&lt;/LSTag&gt; on &lt;LSTag Tooltip="AttackRoll"&gt;Attack Rolls&lt;/LSTag&gt; against it.
+data "Description" "h5a74ab78g6e2bg48ccga35bg544f21e9fb63;1"
+// // &lt;LSTag Type="Image" Info="SoftWarning"/&gt; Condition ends early if the entity takes an action, takes damage, moves, or is no longer obscured.
+data "TooltipPermanentWarnings" "16a8ec13-3d5d-454f-92f0-5d9f3c348d07"
 // data "Icon" "PassiveFeature_Generic_Invisibility"
 // data "FormatColor" "Gray"
 // data "MaterialType" "Replacement"
@@ -412,24 +511,73 @@ data "StatusPropertyFlags" "UnavailableInActiveRoll;DisableOverhead;ExcludeFromP
 // data "OnRemoveFunctors" "IF(Goon_InvisibilityOnRemoveFunctors(true)):ApplyStatus(GOON_SHADOWBLEND_SEEN,100,Target.SHADOWBLEND.Duration,,,,,true)"
 data "OnRemoveFunctors" "IF(Goon_InvisibilityOnRemoveFunctors(false)):ApplyStatus(SHADOWBLEND,100,Target.GOON_SHADOWBLEND_SEEN.Duration,,,,,true)"
 
-// ==================================== Gloomweave
+// ==================================== Misty Presence / Gloomweave
 // Bug Fix: Functionality now matches description, and Shadar-kai Gloom Weaver's Misty Escape from 5e RAW; only removed from attacking or casting anything but Shadowslip.
-// TODO: Shout_Invisibility_ShadarKai_GloomWeaver - dumbass spell doesn't match condition description.
+// Changes: "Invisibility" renamed to match the passive, "Misty Presence".
+
+// new entry "MistyEscape_ShadarKai_GloomWeaver"
+// type "PassiveData"
+// // Misty Presence
+// data "DisplayName" "h85058422gcb51g46cegabaegd4b31dc7f171;1"
+// // After taking damage this character may turn &lt;LSTag Type="Status" Tooltip="INVISIBILITY"&gt;Invisible&lt;/LSTag&gt;.
+// data "Description" "h20d9f4c4g525eg4d54g907dg78bc0122acae;1"
+// data "TooltipUseCosts" "ReactionActionPoint:1"
+// data "Icon" "PassiveFeature_Generic_Invisibility"
+// data "Properties" "Highlighted"
+// data "StatsFunctorContext" "OnDamaged"
+// data "Conditions" "HasActionResource('ReactionActionPoint', 1, 0, false) and Enemy()"
+// data "StatsFunctors" "UseSpell(SWAP,Shout_Invisibility_ShadarKai_GloomWeaver,true,true,true);UseActionResource(SELF, ReactionActionPoint,1)"
+
+new entry "Shout_Invisibility_ShadarKai_GloomWeaver"
+type "SpellData"
+data "SpellType" "Shout"
+// using "Shout_Invisibility_Imp"
+using "Shout_Invisibility_ShadarKai_GloomWeaver"
+// data "Cooldown" "OncePerTurn"
+// data "SpellProperties" "ApplyStatus(INVISIBILITY_SHADARKAI_GLOOMWEAVER,100,1);"
+// data "Icon" "Action_Warlock_OneWithShadows"
+// // Invisibility
+// data "DisplayName" "h98d5db10gb907g4a66gbabbg94eedb4edd18;1"
+// // Misty Presence
+data "DisplayName" "h85058422gcb51g46cegabaegd4b31dc7f171;1"
+// // Become Invisible. The spell ends if you attack, take an action or take damage.
+// data "Description" "h5235b0b2gc746g411agb0fegaf7b66e0919b;2"
+// // Become Invisible.
+data "Description" "h11c400b0ge585g4c68gb492g26b1fe49e5d1;6"
+// data "UseCosts" "ReactionActionPoint:1"
+// data "SpellFlags" "IsConcentration;IsEnemySpell"
+
+// new entry "Target_MistyEscape_ShadarKai_GloomWeaver"
+// type "SpellData"
+// data "SpellType" "Target"
+// using "Target_MistyStep"
+// data "SpellSchool" ""
+// data "Cooldown" "OncePerTurn"
+// data "SpellProperties" "GROUND:TeleportSource()"
+// data "TargetConditions" "CanStand('') and not Character() and not Self()"
+// // Shadowslip
+// data "DisplayName" "hca0add89gea12g4c76gb320gc5fd5a219f8c;2"
+// // The shadar-kai teleports to an unoccupied space it can see.
+// data "Description" "h64394993g0e86g4aa3ga0efg5a9486d2f418;2"
+// data "UseCosts" "BonusActionPoint:1"
+// data "SpellFlags" "HasHighGroundRangeExtension;RangeIgnoreVerticalThreshold;IsEnemySpell;IgnoreSilence;Invisible"
+// data "MemoryCost" ""
+// data "Sheathing" "Somatic"
 
 new entry "INVISIBILITY_SHADARKAI_GLOOMWEAVER"
 type "StatusData"
 data "StatusType" "INVISIBLE"
 // using "INVISIBLE"
 using "INVISIBILITY_SHADARKAI_GLOOMWEAVER"
-// Gloomweave
+// // Gloomweave
 // data "DisplayName" "hb491872cg96b0g4134g99d5g3f439e7c66bb;1"
-// Has &lt;LSTag Tooltip="Advantage"&gt;Advantage&lt;/LSTag&gt; on &lt;LSTag Tooltip="AttackRoll"&gt;Attack Rolls&lt;/LSTag&gt; and imposes &lt;LSTag Tooltip="Disadvantage"&gt;Disadvantage&lt;/LSTag&gt; on enemy Attack Rolls. Attacking or casting spells that aren't &lt;LSTag Type="Spell" Tooltip="Target_MistyEscape_ShadarKai_GloomWeaver"&gt;Shadowslip&lt;/LSTag&gt; ends this condition.
+// // Has &lt;LSTag Tooltip="Advantage"&gt;Advantage&lt;/LSTag&gt; on &lt;LSTag Tooltip="AttackRoll"&gt;Attack Rolls&lt;/LSTag&gt; and imposes &lt;LSTag Tooltip="Disadvantage"&gt;Disadvantage&lt;/LSTag&gt; on enemy Attack Rolls. Attacking or casting spells that aren't &lt;LSTag Type="Spell" Tooltip="Target_MistyEscape_ShadarKai_GloomWeaver"&gt;Shadowslip&lt;/LSTag&gt; ends this condition.
 // data "Description" "hb91c2818ge512g4415g9e54gf4a25e0218ea;1"
+// // Entity has &lt;LSTag Tooltip="Advantage"&gt;Advantage&lt;/LSTag&gt; on &lt;LSTag Tooltip="AttackRoll"&gt;Attack Rolls&lt;/LSTag&gt; against targets who cannot see or otherwise sense its location. Entities that cannot discern the invisible entity's location have &lt;LSTag Tooltip="Disadvantage"&gt;Disadvantage&lt;/LSTag&gt; on &lt;LSTag Tooltip="AttackRoll"&gt;Attack Rolls&lt;/LSTag&gt; against it.
+data "Description" "h5a74ab78g6e2bg48ccga35bg544f21e9fb63;1"
 // data "Boosts" "IgnoreLeaveAttackRange; Invisibility(); Advantage(AttackRoll); DetectDisturbancesBlock(true); UnlockSpell(Target_MistyEscape_ShadarKai_GloomWeaver)"
 data "Boosts" "IgnoreLeaveAttackRange();Invisibility();IF(not Goon_CanSeeInvisible(false)):Disadvantage(AttackTarget);IF(not Goon_CanSeeInvisible(true)):Advantage(AttackRoll);DetectDisturbancesBlock(true);UnlockSpell(Target_MistyEscape_ShadarKai_GloomWeaver)"
 // data "StatusPropertyFlags" "UnavailableInActiveRoll;ExcludeFromPortraitRendering"
-// data "RemoveConditions" "Goon_InvisibilityRemoveConditions()"
-data "RemoveConditions" "(IsStatusEvent(StatusEvent.OnSpellCast) or IsStatusEvent(StatusEvent.OnAttack)) and not SpellId('Target_MistyEscape_ShadarKai_GloomWeaver')"
 data "OnRemoveFunctors" "IF(Goon_InvisibilityOnRemoveFunctors(true)):ApplyStatus(GOON_INVISIBILITY_SHADARKAI_GLOOMWEAVER_SEEN,100,Target.INVISIBILITY_SHADARKAI_GLOOMWEAVER.Duration,,,,,true)"
 
 new entry "GOON_INVISIBILITY_SHADARKAI_GLOOMWEAVER_SEEN"
@@ -443,20 +591,57 @@ data "StatusPropertyFlags" "UnavailableInActiveRoll;ExcludeFromPortraitRendering
 // data "OnRemoveFunctors" "IF(Goon_InvisibilityOnRemoveFunctors(true)):ApplyStatus(GOON_INVISIBILITY_SHADARKAI_GLOOMWEAVER_SEEN,100,Target.INVISIBILITY_SHADARKAI_GLOOMWEAVER.Duration,,,,,true)"
 data "OnRemoveFunctors" "IF(Goon_InvisibilityOnRemoveFunctors(false)):ApplyStatus(INVISIBILITY_SHADARKAI_GLOOMWEAVER,100,Target.GOON_INVISIBILITY_SHADARKAI_GLOOMWEAVER_SEEN.Duration,,,,,true)"
 
-// ==================================== Hide in Plain Sight
-// Changes: Removed on attacking or casting instead of when dealing any damage.
-// TODO: OnDamaged removal. Except it doesn't work as a status event.
+// ==================================== Hide in Plain Sight (Ranger)
+// Changes: Revealed when attacking or casting instead of when dealing any damage.
+// TODO: OnDamaged removal passive as there's no status event for it. It would count as external removal and needs testing, so I'll leave it just for the second.
+
+new entry "Shout_HideInPlainSight"
+type "SpellData"
+data "SpellType" "Shout"
+using "Shout_HideInPlainSight"
+// data "SpellProperties" "ApplyStatus(HIDE_IN_PLAIN_SIGHT,100,-1) "
+// data "TargetConditions" "Self() "
+// data "Icon" "Action_HideInPlainSight"
+// // Hide in Plain Sight
+// data "DisplayName" "hbcd2ec07g73e3g4508g8ed9gd182ae6070d1;2"
+// // Camouflage yourself with your environment to become &lt;LSTag Type="Status" Tooltip="INVISIBILITY"&gt;Invisible&lt;/LSTag&gt; and gain a +[1] bonus to Stealth &lt;LSTag Tooltip="AbilityCheck"&gt;Checks&lt;/LSTag&gt;, as long as you stand still. 
+// data "Description" "h4cb3cde4g931fg486bg8537g6aeb4c4cd691;5"
+// // Camouflage yourself with your environment to become &lt;LSTag Type="Status" Tooltip="INVISIBILITY"&gt;Invisible&lt;/LSTag&gt; and gain a +[1] bonus to &lt;LSTag Tooltip="Stealth"&gt;Stealth&lt;/LSTag&gt; &lt;LSTag Tooltip="SkillCheck"&gt;Skill Checks&lt;/LSTag&gt;, as long as you stand still.
+data "Description" "ha42aa98dg2ddcg4dbagb07dgff774cf337a6;1"
+// data "DescriptionParams" "10"
+// data "TooltipStatusApply" "ApplyStatus(HIDE_IN_PLAIN_SIGHT,100,-1) "
+// // &lt;LSTag Type="Image" Info="SoftWarning"/&gt; Invisibility ends early if you move, attack, cast another spell, take an action, or take damage.
+// data "TooltipPermanentWarnings" "4dff8cb1-4a1d-4474-bd02-7f703fdfff22"
+// // &lt;LSTag Type="Image" Info="SoftWarning"/&gt; Condition ends early if the entity takes an action, takes damage, or moves.
+data "TooltipPermanentWarnings" "e8a02313-10cb-41b1-904d-0818f5eb1979"
+// data "CastSound" "Action_Cast_Ranger_HideInPlainSight"
+// data "TargetSound" "Action_Impact_Ranger_HideInPlainSight"
+// data "CastTextEvent" "Cast"
+// data "UseCosts" "ActionPoint:1"
+// data "SpellAnimation" "85f63b1e-1fe6-4228-863d-71f43a945b46,,;,,;ccd7f320-83cb-4156-b104-876ff4840648,,;04c7277e-a1bc-44df-8914-2c70476ca926,,;db52441a-8a80-4630-bcb8-0f220e1b8323,,;,,;f588875b-9a5f-4e05-ac41-3f3e73cdb4e4,,;,,;,,"
+// data "VerbalIntent" "Utility"
+// data "SpellStyleGroup" "Class"
+// data "SpellFlags" "Stealth;IgnoreSilence;Invisible"
+// data "Requirements" "!Combat"
+// data "PrepareEffect" "2adc2574-07ac-4116-ba89-9ffe367ff77b"
+// data "CastEffect" "37313775-6be1-418d-b966-43dd502aa977"
 
 new entry "HIDE_IN_PLAIN_SIGHT"
 type "StatusData"
 data "StatusType" "INVISIBLE"
 // using "INVISIBLE"
 using "HIDE_IN_PLAIN_SIGHT"
-// Hide in Plain Sight
+// // Hide in Plain Sight
 // data "DisplayName" "h4c8c86a0g8885g4ec1gbd43g7cbca8b9fd1e;2"
-// Affected entity is invisible. It has &lt;LSTag Tooltip="Advantage"&gt;Advantage&lt;/LSTag&gt; on &lt;LSTag Tooltip="AttackRoll"&gt;Attack Rolls&lt;/LSTag&gt;. It has a +[1] bonus to Stealth &lt;LSTag Tooltip="AbilityCheck"&gt;Checks&lt;/LSTag&gt;. &lt;br&gt;&lt;br&gt;Invisibility ends early if the invisible entity moves, attacks, casts another spell, takes an action, or takes damage.
+// // Affected entity is invisible. It has &lt;LSTag Tooltip="Advantage"&gt;Advantage&lt;/LSTag&gt; on &lt;LSTag Tooltip="AttackRoll"&gt;Attack Rolls&lt;/LSTag&gt;. It has a +[1] bonus to Stealth &lt;LSTag Tooltip="AbilityCheck"&gt;Checks&lt;/LSTag&gt;. &lt;br&gt;&lt;br&gt;Invisibility ends early if the invisible entity moves, attacks, casts another spell, takes an action, or takes damage.
 // data "Description" "h0ceda8fcga10eg45d9gb4cag388ffbfcec3b;3"
+// // Entity has &lt;LSTag Tooltip="Advantage"&gt;Advantage&lt;/LSTag&gt; on &lt;LSTag Tooltip="AttackRoll"&gt;Attack Rolls&lt;/LSTag&gt; against targets who cannot see or otherwise sense its location. Entities that cannot discern the invisible entity's location have &lt;LSTag Tooltip="Disadvantage"&gt;Disadvantage&lt;/LSTag&gt; on &lt;LSTag Tooltip="AttackRoll"&gt;Attack Rolls&lt;/LSTag&gt; against it.&lt;br&gt;Additionally, it has a +[1] bonus to &lt;LSTag Tooltip="Stealth"&gt;Stealth&lt;/LSTag&gt; &lt;LSTag Tooltip="SkillCheck"&gt;Skill Checks&lt;/LSTag&gt;.
+data "Description" "h78a9985dg2cf3g4853gb5d3g1093d55f1a6f;1"
 // data "DescriptionParams" "10"
+// // &lt;LSTag Type="Image" Info="SoftWarning"/&gt; Condition ends early if the entity attacks or casts a spell.
+// data "TooltipPermanentWarnings" "3541c8b9-688f-459d-842f-5d7760b89424"
+// // &lt;LSTag Type="Image" Info="SoftWarning"/&gt; Condition ends early if the entity takes an action, takes damage, or moves.
+data "TooltipPermanentWarnings" "e8a02313-10cb-41b1-904d-0818f5eb1979"
 // data "Icon" "Action_HideInPlainSight"
 // data "StackPriority" "2"
 // data "Boosts" "IgnoreLeaveAttackRange; Invisibility(); Advantage(AttackRoll); DetectDisturbancesBlock(true); Skill(Stealth, 10)"
@@ -480,13 +665,78 @@ data "StatusPropertyFlags" "UnavailableInActiveRoll;ExcludeFromPortraitRendering
 // data "OnRemoveFunctors" "IF(Goon_InvisibilityOnRemoveFunctors(true)):ApplyStatus(GOON_HIDE_IN_PLAIN_SIGHT_SEEN,100,Target.HIDE_IN_PLAIN_SIGHT.Duration,,,,,true)"
 data "OnRemoveFunctors" "IF(Goon_InvisibilityOnRemoveFunctors(false)):ApplyStatus(HIDE_IN_PLAIN_SIGHT,100,Target.GOON_HIDE_IN_PLAIN_SIGHT_SEEN.Duration,,,,,true)"
 
-// ==================================== Misty Escape
+// ==================================== Misty Escape / Cloaking Mist (Archfey Warlock)
+// Changes: Overhauled Conditions and EnableCondition for Misty Escape interrupt.
+// Changes: "Invisible" renamed to match the spell, "Cloaking Mist".
+
+// new entry "MistyEscape"
+// type "PassiveData"
+// // Misty Escape
+// data "DisplayName" "h0f77790bg496eg42a4ga07eg7deddd656015;2"
+// // Upon taking damage, become &lt;LSTag Type="Status" Tooltip="INVISIBLE"&gt;Invisible&lt;/LSTag&gt;. On your next turn, you can cast &lt;LSTag Type="Spell" Tooltip="Target_MistyStep"&gt;Misty Step&lt;/LSTag&gt;, though this will break your invisibility.
+// data "Description" "h40ac8270g4395g4035g8d18g886e732c289e;3"
+// data "Icon" "PassiveFeature_MistyEscape"
+// data "Properties" "Highlighted"
+// data "Boosts" "UnlockInterrupt(Interrupt_MistyEscape);ActionResource(Interrupt_MistyEscape,1,0)"
+
+new entry "Interrupt_MistyEscape"
+type "InterruptData"
+using "Interrupt_MistyEscape"
+// // Misty Escape
+// data "DisplayName" "hf13cc094gbd5dg4d46g9658g2327548256c2;1"
+// // Upon taking damage, become &lt;LSTag Type="Status" Tooltip="INVISIBLE"&gt;Invisible&lt;/LSTag&gt;. On your next turn, you can cast &lt;LSTag Type="Spell" Tooltip="Target_MistyStep"&gt;Misty Step&lt;/LSTag&gt;, though this will break your invisibility.
+// data "Description" "h0ec60b34gf7e0g4cbbg91f7gf9c5e781a48d;1"
+// // Upon taking damage, become &lt;LSTag Type="Status" Tooltip="MISTY_ESCAPE_INVISIBLE"&gt;Invisible&lt;/LSTag&gt;. On your next turn, you can cast &lt;LSTag Type="Spell" Tooltip="Target_MistyStep"&gt;Misty Step&lt;/LSTag&gt;, though this will break your invisibility.
+data "Description" "h1af0940bg16eeg4393g9e4cgde0bc66098bc;1"
+// data "Icon" "PassiveFeature_MistyEscape"
+// data "InterruptContext" "OnCastHit"
+// data "InterruptContextScope" "Self"
+// data "Container" "YesNoDecision"
+// data "Conditions" "IsAbleToReact(context.Observer) and Enemy(context.Source,context.Observer) and HasFunctor(StatsFunctorType.DealDamage) and IsHit() and not AnyEntityIsItem() and HasLastAttackTriggered()"
+data "Conditions" "Goon_InterruptConditions() and not Self(context.Source,context.Observer) and TotalDamageDoneGreaterThan(0)"
+// data "Properties" "UseSpell(OBSERVER_OBSERVER,Shout_Invisibility_MistyEscape,true,true,true)"
+// data "Cost" "ReactionActionPoint:1;Interrupt_MistyEscape:1"
+// data "InterruptDefaultValue" "Ask;Enabled"
+// data "EnableCondition" "HasActionResource('Interrupt_MistyEscape', 1, 0, false, false, context.Source) and (not HasAnyStatus({'SG_Polymorph','SG_Blinded'}) or HasAnyStatus({'SG_Disguise','WILDSHAPE_STARRY_ARCHER_PLAYER','WILDSHAPE_STARRY_CHALICE_PLAYER','WILDSHAPE_STARRY_DRAGON_PLAYER'}));"
+data "EnableCondition" "Goon_InterruptEnableConditions(true) and HasActionResource('Interrupt_MistyEscape', 1, 0, false, false, context.Source) and not IsImmuneToStatus('SG_Invisible')"
+// data "EnableContext" "OnActionResourcesChanged;OnStatusApplied;OnStatusRemoved"
+
+new entry "Shout_Invisibility_MistyEscape"
+type "SpellData"
+data "SpellType" "Shout"
+// using "Shout_Invisibility_ShadarKai_GloomWeaver"
+using "Shout_Invisibility_MistyEscape"
+// data "Cooldown" "OncePerTurn"
+// data "SpellProperties" "ApplyStatus(MISTY_ESCAPE_INVISIBLE,100,1);"
+// data "Icon" "PassiveFeature_MistyEscape"
+// // // Cloaking Mist
+// data "DisplayName" "h06645231gdd41g448fga08cg37a3db14b3a7;2"
+// // // Turn &lt;LSTag Type="Status" Tooltip="INVISIBILITY"&gt;Invisible&lt;/LSTag&gt; after casting &lt;LSTag Type="Spell" Tooltip="Target_Misty_Step"&gt;Misty Step&lt;/LSTag&gt;.
+// data "Description" "haab5e91cg9a10g498eg8eb8g246da2e273b5;2"
+// // // Turn &lt;LSTag Type="Status" Tooltip="MISTY_ESCAPE_INVISIBLE"&gt;Invisible&lt;/LSTag&gt; after casting &lt;LSTag Type="Spell" Tooltip="Target_Misty_Step"&gt;Misty Step&lt;/LSTag&gt;.
+data "Description" "h0e10ccadg50a1g4b0cgaa59g39488605f7ce;1"
+// data "TooltipStatusApply" "ApplyStatus(MISTY_ESCAPE_INVISIBLE,100,1)"
+// data "SpellFlags" ""
+
+new entry "Target_MistyStep_Free"
+type "SpellData"
+data "SpellType" "Target"
+// using "Target_MistyStep"
+using "Target_MistyStep_Free"
+// data "SpellProperties" "GROUND:TeleportSource();GROUND:RemoveStatus(SELF,MISTY_ESCAPE_INVISIBLE)"
+data "SpellProperties" "GROUND:TeleportSource();GROUND:RemoveStatus(SELF,MISTY_ESCAPE_INVISIBLE);GROUND:RemoveStatus(SELF,GOON_MISTY_ESCAPE_INVISIBLE_SEEN)"
+// data "UseCosts" ""
+// data "SpellFlags" "HasVerbalComponent;HasHighGroundRangeExtension;RangeIgnoreVerticalThreshold;Temporary"
 
 new entry "MISTY_ESCAPE_INVISIBLE"
 type "StatusData"
 data "StatusType" "INVISIBLE"
 // using "INVISIBLE"
 using "MISTY_ESCAPE_INVISIBLE"
+// // Invisible
+// data "DisplayName" "hfbb59857g081eg4da0gbcf0gaa2432cd7a28;1"
+// // // Cloaking Mist
+data "DisplayName" "h06645231gdd41g448fga08cg37a3db14b3a7;2"
 // data "Icon" "PassiveFeature_MistyEscape"
 // data "StackId" ""
 // data "StackPriority" ""
@@ -508,6 +758,30 @@ data "StatusPropertyFlags" "UnavailableInActiveRoll;ExcludeFromPortraitRendering
 data "OnRemoveFunctors" "IF(Goon_InvisibilityOnRemoveFunctors(false,true)):ApplyStatus(MISTY_ESCAPE_INVISIBLE,100,Target.GOON_MISTY_ESCAPE_INVISIBLE_SEEN.Duration,,,,,true)"
 
 // ==================================== Prowl
+// TODO: Strict and/or Obscurity rules?
+
+// new entry "Shout_Prowl_Panther"
+// type "SpellData"
+// data "SpellType" "Shout"
+// using "Shout_Invisibility_Myrmidon_Air"
+// data "Cooldown" ""
+// data "SpellProperties" "AI_IGNORE:ApplyStatus(INVISIBILITY_PANTHER,100,-1);AI_ONLY:ApplyStatus(INVISIBILITY_PANTHER,100,2); ApplyStatus(PROWL,100,-1);ApplyStatus(PROWL_USED,100,-1)"
+// // Prowl
+// data "DisplayName" "h047a0c6fg043eg4f79gb497g7b5b25899f8a;2"
+// // Turn &lt;LSTag Type="Status" Tooltip="INVISIBLE"&gt;Invisible&lt;/LSTag&gt; while stalking your prey. While Invisible, your first attack deals an additional [1] damage.
+// data "Description" "h277a5323g8a85g4329g8482g50f1a50bb124;3"
+// data "DescriptionParams" "1d8"
+// data "ExtraDescription" ""
+// data "TooltipStatusApply" "ApplyStatus(INVISIBILITY,100,-1);ApplyStatus(PROWL,100,-1)"
+// data "PrepareSound" "CrSpell_Prepare_Panther"
+// data "CastSound" "CrSpell_Cast_Prowl"
+// data "TargetSound" "CrSpell_Impact_Prowl"
+// data "SpellAnimation" "5e57443f-284e-47b2-915e-5b6417db269c,,;d8b7f668-db2b-43b0-9707-5da2ed2cf27e,,;7521e279-1bb3-4105-b32d-8206234836a3,,;d172e037-7041-4352-9a20-5f4b185f9ef1,,;5bcdefbb-2194-46c2-ac77-0b2d8472a5f7,,;,,;5fdb66be-7506-411a-a7ea-c4783288aac8,,;,,;,,"
+// data "SpellFlags" "UnavailableInDialogs;IsMelee;Wildshape"
+// data "RequirementConditions" "not HasStatus('PROWL_USED')  "
+// data "PrepareEffect" "33257c27-914e-412f-9926-00bc3c39b055"
+// data "CastEffect" "7a3c8d6f-0ea3-40ca-8f0e-0e17fcc7ebf7"
+// data "Sheathing" "DontChange"
 
 new entry "INVISIBILITY_PANTHER"
 type "StatusData"
@@ -533,23 +807,40 @@ data "StatusPropertyFlags" "UnavailableInActiveRoll;ExcludeFromPortraitRendering
 // data "OnRemoveFunctors" "IF(Goon_InvisibilityOnRemoveFunctors(false,true)):ApplyStatus(GOON_INVISIBILITY_PANTHER_SEEN,100,Target.INVISIBILITY_PANTHER.Duration,,,,,true)"
 data "OnRemoveFunctors" "IF(Goon_InvisibilityOnRemoveFunctors(false,true)):ApplyStatus(INVISIBILITY_PANTHER,100,Target.GOON_INVISIBILITY_PANTHER_SEEN.Duration,,,,,true)"
 
-// ==================================== XXXXXXXXXXXXXXXXXXXX
-// TODO: Wot
+// ==================================== QRY_FadeAppear_TrySetOnStage((GUIDSTRING)_Entity,(INTEGER)_OnStage)
+// TODO: Hmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm, wot.
 
-new entry "FADE_APPEAR"
-type "StatusData"
-data "StatusType" "INVISIBLE"
-// using "GREATER_INVISIBILITY"
-using "FADE_APPEAR"
-// data "StatusPropertyFlags" "UnavailableInActiveRoll;DisableCombatlog;DisableOverhead;DisablePortraitIndicator;IgnoreResting;ApplyToDead"
-// data "StatusGroups" "SG_None"
-// data "StatusEffect" "6e9a55e5-56ae-4098-a789-ba4a21bf170e"
-data "OnApplyFunctors" "ApplyStatus(GREATER_INVISIBILITY_TRACKER,100,-1)"
-data "RemoveEvents" "OnSpellCast;OnEntityPickUp;OnEntityDrop;OnEntityDrag"
-data "RemoveConditions" "GreaterInvisibilityCheck_InvisSpellOrRoll()"
-data "OnRemoveFunctors" "RemoveStatus(GREATER_INVISIBILITY_TRACKER);RemoveStatus(GREATER_INVISIBILITY_SUCCESS)"
+// new entry "FADE_APPEAR"
+// type "StatusData"
+// data "StatusType" "INVISIBLE"
+// // using "GREATER_INVISIBILITY"
+// using "FADE_APPEAR"
+// // data "StatusPropertyFlags" "UnavailableInActiveRoll;DisableCombatlog;DisableOverhead;DisablePortraitIndicator;IgnoreResting;ApplyToDead"
+// // data "StatusGroups" "SG_None"
+// // data "StatusEffect" "6e9a55e5-56ae-4098-a789-ba4a21bf170e"
+// data "OnApplyFunctors" "ApplyStatus(GREATER_INVISIBILITY_TRACKER,100,-1)"
+// data "RemoveEvents" "OnSpellCast;OnEntityPickUp;OnEntityDrop;OnEntityDrag"
+// data "RemoveConditions" "GreaterInvisibilityCheck_InvisSpellOrRoll()"
+// data "OnRemoveFunctors" "RemoveStatus(GREATER_INVISIBILITY_TRACKER);RemoveStatus(GREATER_INVISIBILITY_SUCCESS)"
 
-// ==================================== XXXXXXXXXXXXXXXXXXXX
+// ==================================== Shroud Self
+
+// new entry "Shout_Shroud_Self"
+// type "SpellData"
+// data "SpellType" "Shout"
+// using "Shout_CloakOfShadows"
+// data "SpellProperties" "AI_IGNORE:ApplyStatus(SHROUD_SELF,100,2); AI_ONLY:ApplyStatus(AI_HELPER_BUFF_SMALL,100,1)"
+// data "TargetConditions" "Self() and not HasStatus('FAERIE_FIRE')"
+// data "Icon" "Action_Warlock_OneWithShadows"
+// // Shroud Self
+// data "DisplayName" "h27740c44gd84fg4dfaga722gade9430d5dca;3"
+// // Wrap yourself in shadows to become &lt;LSTag Type="Status" Tooltip="SHROUD_SELF"&gt;Invisible&lt;/LSTag&gt;.
+// data "Description" "hd4a921c1g5e84g41a8g95e7g20152f73fa30;1"
+// data "TooltipStatusApply" "ApplyStatus(SHROUD_SELF,100,2)"
+// data "UseCosts" "BonusActionPoint:1"
+// data "SpellAnimation" "85c2d091-d84a-44c1-8361-20c5ce7149f1,,;,,;c779f93f-9f56-4044-83e3-fd640846a6f4,,;162e8b42-0b67-4415-ad00-b94f0c84026f,,;c70b4b2a-0a53-47e2-a455-b8cf2e7cd862,,;,,;992158f7-2b13-4519-95de-868325b57443,,;,,;,,"
+// data "SpellStyleGroup" ""
+// data "SpellFlags" "Stealth;Invisible;IsEnemySpell"
 
 new entry "SHROUD_SELF"
 type "StatusData"
@@ -576,12 +867,30 @@ data "OnRemoveFunctors" "IF(Goon_InvisibilityOnRemoveFunctors(false)):ApplyStatu
 
 // ==================================== Umbral Shroud
 
+// new entry "Shout_UmbralCloak"
+// type "SpellData"
+// data "SpellType" "Shout"
+// using "Shout_CloakOfShadows_Monk"
+// data "Cooldown" "OncePerShortRest"
+// data "SpellProperties" "ApplyStatus(UMBRAL_CLOAK,100,10)"
+// data "Icon" "Action_UmbralCloak"
+// // Umbral Shroud
+// data "DisplayName" "hf25c4768g3846g4b20gaa2cgd0cfb645b8b6;2"
+// data "TooltipStatusApply" "ApplyStatus(UMBRAL_CLOAK,100,10)"
+// data "PrepareSound" "Action_Prepare_Ranger_UmbralCloak"
+// data "PrepareLoopSound" "Action_Loop_Ranger_UmbralCloak"
+// data "CastSound" "Action_Cast_Ranger_UmbralCloak"
+// data "TargetSound" "Action_Impact_Ranger_UmbralCloak"
+// data "SpellAnimation" "85f63b1e-1fe6-4228-863d-71f43a945b46,,;,,;e55bcfd5-530b-4de5-9937-a07f308d4d1c,,;989456a3-bd3b-4d71-a9bc-4abc13c2d9a3,,;db52441a-8a80-4630-bcb8-0f220e1b8323,,;,,;f588875b-9a5f-4e05-ac41-3f3e73cdb4e4,,;,,;,,"
+// data "PrepareEffect" "81d16f04-5833-4382-8b87-2bb644271e9a"
+// data "CastEffect" "6606af24-4358-4aa1-afe6-fd9251f07b1c"
+
 new entry "UMBRAL_CLOAK"
 type "StatusData"
 data "StatusType" "INVISIBLE"
 // using "CLOAK_OF_SHADOWS_MONK"
 using "UMBRAL_CLOAK"
-// Umbral Shroud
+// // Umbral Shroud
 // data "DisplayName" "h9f4bc3c5gff04g40cdga551gd4058e65ed58;1"
 // data "Icon" "Action_UmbralCloak"
 // data "SoundStop" "Spell_Status_UmbralCloak_End"
@@ -600,15 +909,48 @@ data "StatusPropertyFlags" "UnavailableInActiveRoll;ExcludeFromPortraitRendering
 // data "OnRemoveFunctors" "IF(Goon_InvisibilityOnRemoveFunctors(true)):ApplyStatus(GOON_UMBRAL_CLOAK_SEEN,100,Target.UMBRAL_CLOAK.Duration,,,,,true)"
 data "OnRemoveFunctors" "IF(Goon_InvisibilityOnRemoveFunctors(false)):ApplyStatus(UMBRAL_CLOAK,100,Target.GOON_UMBRAL_CLOAK_SEEN.Duration,,,,,true)"
 
-// ==================================== Cloak of Shadows
-// Note: Mechanically different to Monk - Cloak of Shadows, for some reason.
+// ==================================== Channel Divinity: Cloak of Shadows
+// Bug Fix: Description LSTag now points to the correct condition.
+// Bug Fix: Removed references towards obscurity, description now matches functionality.
+// TODO: Go against RAW and make it work like the Way of Shadow Monk one?
+
+new entry "Shout_CloakOfShadows"
+type "SpellData"
+data "SpellType" "Shout"
+using "Shout_CloakOfShadows"
+// data "SpellProperties" "ApplyStatus(CLOAK_OF_SHADOWS,100,2)"
+// data "TargetConditions" "Self()"
+// data "Icon" "Action_Cleric_ChannelDivinity_CloakOfShadows"
+// // Channel Divinity: Cloak of Shadows
+// data "DisplayName" "h7e7158a6gbe1ag479ag9dedgb95729eea9ce;1"
+// // Wrap yourself in shadows to become &lt;LSTag Type="Status" Tooltip="CLOAK_OF_SHADOWS_MONK"&gt;Invisible&lt;/LSTag&gt; if you are obscured.
+// data "Description" "h89c825a7gfe72g4463g80dcg3372e0b9a73c;3"
+// // Wrap yourself in shadows to become &lt;LSTag Type="Status" Tooltip="CLOAK_OF_SHADOWS"&gt;Invisible&lt;/LSTag&gt;.
+data "Description" "h3e687d6fg0811g48c0g9b03gfe6682217a71;1"
+// data "TooltipStatusApply" "ApplyStatus(CLOAK_OF_SHADOWS,100,2)"
+// // &lt;LSTag Type="Image" Info="SoftWarning"/&gt; Invisibility ends early if you attack, cast another spell, take an action, or take damage.
+// data "TooltipPermanentWarnings" "d6bcda06-80ef-4889-98b9-43b886f77bd6"
+// // &lt;LSTag Type="Image" Info="SoftWarning"/&gt; Condition ends early if the entity attacks or casts a spell.
+data "TooltipPermanentWarnings" "3541c8b9-688f-459d-842f-5d7760b89424"
+// data "PrepareSound" "Spell_Prepare_Utility_Gen_L1to3_01"
+// data "PrepareLoopSound" "Spell_Prepare_Utility_Gen_L1to3_01_Loop"
+// data "CastSound" "Spell_Cast_Buff_CloackOfShadows_L1to3"
+// data "TargetSound" "Spell_Impact_Buff_CloackOfShadows_L1to3"
+// data "CastTextEvent" "Cast"
+// data "UseCosts" "ActionPoint:1;ChannelDivinity:1"
+// data "SpellAnimation" "2f0d97b9-4a1f-4bf3-a3c2-32efb563d601,,;,,;ebc916f8-b838-4385-b14c-766a0727404f,,;719ab963-7045-4dfe-b565-473fadaa1d5f,,;57e449b3-b712-4508-afcf-f2e91dc473f6,,;,,;84f3727f-aabc-4e34-bf31-c6cd0160bec9,,;,,;,,"
+// data "VerbalIntent" "Utility"
+// data "SpellStyleGroup" "Class"
+// data "SpellFlags" "Stealth;Invisible"
+// data "PrepareEffect" "655d9d60-070c-4f7d-ba2f-926c8c9d0778"
+// data "CastEffect" "323c90e0-e77b-4f43-9159-4026e5cbf94a"
 
 new entry "CLOAK_OF_SHADOWS"
 type "StatusData"
 data "StatusType" "INVISIBLE"
 // using "INVISIBILITY"
 using "CLOAK_OF_SHADOWS"
-// Channel Divinity: Cloak of Shadows
+// // Channel Divinity: Cloak of Shadows
 // data "DisplayName" "h203d64c3g9637g4f65gb2d9g3c40c57a39fd;1"
 // data "Icon" "Action_Cleric_ChannelDivinity_CloakOfShadows"
 // data "StackPriority" "2"
@@ -628,22 +970,55 @@ data "StatusPropertyFlags" "UnavailableInActiveRoll;ExcludeFromPortraitRendering
 // data "OnRemoveFunctors" "IF(Goon_InvisibilityOnRemoveFunctors(true)):ApplyStatus(GOON_CLOAK_OF_SHADOWS_SEEN,100,Target.CLOAK_OF_SHADOWS.Duration,,,,,true)"
 data "OnRemoveFunctors" "IF(Goon_InvisibilityOnRemoveFunctors(false)):ApplyStatus(CLOAK_OF_SHADOWS,100,Target.GOON_CLOAK_OF_SHADOWS_SEEN.Duration,,,,,true)"
 
-// ==================================== Monk - Cloak of Shadows
+// ==================================== Cloak of Shadows (Way of Shadow Monk)
+// Changes: Revealed when attacking or casting instead of when dealing any damage.
+
+new entry "Shout_CloakOfShadows_Monk"
+type "SpellData"
+data "SpellType" "Shout"
+// using "Shout_CloakOfShadows"
+using "Shout_CloakOfShadows_Monk"
+// data "SpellProperties" "ApplyStatus(CLOAK_OF_SHADOWS_MONK,100,10)"
+// // Cloak of Shadows
+// data "DisplayName" "h9edc5297g58c0g4b7dg8e45g59e03f646c93;2"
+// // Wrap yourself in shadows to become &lt;LSTag Type="Status" Tooltip="CLOAK_OF_SHADOWS"&gt;Invisible&lt;/LSTag&gt;.
+// data "Description" "h3e687d6fg0811g48c0g9b03gfe6682217a71;1"
+// // Wrap yourself in shadows to become &lt;LSTag Type="Status" Tooltip="CLOAK_OF_SHADOWS_MONK"&gt;Invisible&lt;/LSTag&gt; if you are obscured.
+data "Description" "hd070d3b0g6074g45cbga90bgac6b8118db11;1"
+// data "TooltipStatusApply" "ApplyStatus(CLOAK_OF_SHADOWS_MONK,100,10)"
+// // &lt;LSTag Type="Image" Info="SoftWarning"/&gt; Condition ends early if the entity attacks or casts a spell.
+// data "TooltipPermanentWarnings" "3541c8b9-688f-459d-842f-5d7760b89424"
+// // &lt;LSTag Type="Image" Info="SoftWarning"/&gt; Condition ends early if the entity attacks, casts a spell, or is no longer obscured.
+data "TooltipPermanentWarnings" "4a842ac9-b6c5-4241-8923-d526265b89fe"
+// data "PrepareSound" "Vocal_Component_Shadow_Monk"
+// data "CastSound" "Spell_Cast_Monk_CloakofShadows_L1to3"
+// data "TargetSound" "Vocal_Component_Stop"
+// data "UseCosts" "ActionPoint:1"
+// data "SpellAnimation" "85c2d091-d84a-44c1-8361-20c5ce7149f1,,;,,;c779f93f-9f56-4044-83e3-fd640846a6f4,,;162e8b42-0b67-4415-ad00-b94f0c84026f,,;c70b4b2a-0a53-47e2-a455-b8cf2e7cd862,,;,,;992158f7-2b13-4519-95de-868325b57443,,;,,;,,"
+// data "SpellFlags" "Stealth;Invisible"
+// data "RequirementConditions" "not HasObscuredState(ObscuredState.Clear)"
+// data "RequirementEvents" "OnObscurityChanged"
+// data "PrepareEffect" "a0458d31-f8ef-419a-8708-5715c81e91d3"
+// data "CastEffect" "c711b520-0c22-4972-9bd0-050bfc74890d"
 
 new entry "CLOAK_OF_SHADOWS_MONK"
 type "StatusData"
 data "StatusType" "INVISIBLE"
 // using "CLOAK_OF_SHADOWS"
 using "CLOAK_OF_SHADOWS_MONK"
-// Cloak of Shadows
+// // Cloak of Shadows
 // data "DisplayName" "ha67bd9b7g69e7g412cga360g4fa319434ef0;1"
-// Has &lt;LSTag Tooltip="Advantage"&gt;Advantage&lt;/LSTag&gt; on &lt;LSTag Tooltip="AttackRoll"&gt;Attack Rolls&lt;/LSTag&gt; and imposes &lt;LSTag Tooltip="Disadvantage"&gt;Disadvantage&lt;/LSTag&gt; on enemy Attack Rolls. Attacking, casting spells, or entering a brightly lit area ends this condition.
+// // Has &lt;LSTag Tooltip="Advantage"&gt;Advantage&lt;/LSTag&gt; on &lt;LSTag Tooltip="AttackRoll"&gt;Attack Rolls&lt;/LSTag&gt; and imposes &lt;LSTag Tooltip="Disadvantage"&gt;Disadvantage&lt;/LSTag&gt; on enemy Attack Rolls. Attacking, casting spells, or entering a brightly lit area ends this condition.
 // data "Description" "h7a47bf4fgb832g4945gae9bg8170288fe3ab;1"
+// // &lt;LSTag Type="Image" Info="SoftWarning"/&gt; Condition ends early if the entity attacks or casts a spell.
+// data "TooltipPermanentWarnings" "3541c8b9-688f-459d-842f-5d7760b89424"
+// // &lt;LSTag Type="Image" Info="SoftWarning"/&gt; Condition ends early if the entity attacks, casts a spell, or is no longer obscured.
+data "TooltipPermanentWarnings" "4a842ac9-b6c5-4241-8923-d526265b89fe"
 // data "StatusPropertyFlags" "UnavailableInActiveRoll;ExcludeFromPortraitRendering"
 // data "RemoveEvents" "OnSpellCast;OnDamage;OnEntityDrop;OnEntityPickUp;OnEntityDrag;OnObscurityChanged"
 data "RemoveEvents" "OnSpellCast;OnAttack;OnEntityDrop;OnEntityPickUp;OnEntityDrag;OnObscurityChanged"
 // data "RemoveConditions" "(IsStatusEvent(StatusEvent.OnSpellCast) and not HasSpellFlag(SpellFlags.Invisible)) or (IsStatusEvent(StatusEvent.OnDamage) and TotalDamageDoneGreaterThan(0)) or (IsStatusEvent(StatusEvent.OnObscuirtyChanged) and HasObscuredState(ObscuredState.Clear,context.Source)) or (IsStatusEvent(StatusEvent.OnSpellCast) and not HasSpellFlag(SpellFlags.Invisible)) or (IsStatusEvent(StatusEvent.OnDamage) and TotalDamageDoneGreaterThan(0)) or (not IsStatusEvent(StatusEvent.OnSpellCast) and not IsStatusEvent(StatusEvent.OnDamage) and not IsStatusEvent(StatusEvent.OnSpellCast))"
-data "RemoveConditions" "Goon_InvisibilityRemoveConditions(true,true)"
+data "RemoveConditions" "Goon_InvisibilityRemoveConditions(false,true)"
 data "OnRemoveFunctors" "IF(Goon_InvisibilityOnRemoveFunctors(true)):ApplyStatus(GOON_CLOAK_OF_SHADOWS_MONK_SEEN,100,Target.CLOAK_OF_SHADOWS_MONK.Duration,,,,,true)"
 
 new entry "GOON_CLOAK_OF_SHADOWS_MONK_SEEN"
@@ -681,24 +1056,62 @@ data "StatusPropertyFlags" "UnavailableInActiveRoll;ExcludeFromPortraitRendering
 data "OnRemoveFunctors" "IF(Goon_InvisibilityOnRemoveFunctors(false)):ApplyStatus(POTION_OF_INVISIBILITY,100,Target.GOON_POTION_OF_INVISIBILITY_SEEN.Duration,,,,,true)"
 
 // ==================================== One with the Shadows
-// TODO: Obscurity rules? Guess based on name lol.
+// Bug Fix: Condition is removed when the entity is no longer obscured.
+// Changes: Revealed when attacking or casting instead of when dealing any damage.
+// TODO: OnDamaged removal passive as there's no status event for it. It would count as external removal and needs testing, so I'll leave it just for the second.
+
+new entry "Shout_OneWithShadows"
+type "SpellData"
+data "SpellType" "Shout"
+using "Shout_OneWithShadows"
+// data "SpellProperties" "ApplyStatus(ONE_WITH_SHADOWS,100,-1)"
+// data "TargetConditions" "Self()"
+// data "Icon" "Action_Warlock_OneWithShadows"
+// // One with Shadows
+// data "DisplayName" "h3d20ec6fg8315g4cd1g9e78gb8c677bcb351;1"
+// // Vanish into the darkness and become &lt;LSTag Type="Status" Tooltip="INVISIBLE"&gt;Invisible&lt;/LSTag&gt;, as long as you stand still.
+// data "Description" "h8e7ded7fg78d0g4959g8ceegb09d929dd863;3"
+// data "ExtraDescription" ""
+// data "TooltipStatusApply" "ApplyStatus(ONE_WITH_SHADOWS,100,-1)"
+// // &lt;LSTag Type="Image" Info="SoftWarning"/&gt; Invisibility ends early if you move, attack, cast another spell, take an action, or take damage.
+// data "TooltipPermanentWarnings" "4dff8cb1-4a1d-4474-bd02-7f703fdfff22"
+// // &lt;LSTag Type="Image" Info="SoftWarning"/&gt; Condition ends early if the entity takes an action, takes damage, moves, or is no longer obscured.
+data "TooltipPermanentWarnings" "16a8ec13-3d5d-454f-92f0-5d9f3c348d07"
+// data "PrepareSound" "Action_Prepare_OneWithShadows"
+// data "PrepareLoopSound" "Spell_Prepare_Damage_Necrotic_Gen_L1to3_Loop"
+// data "CastSound" "Action_Cast_OneWithShadows"
+// data "CastTextEvent" "Cast"
+// data "UseCosts" "ActionPoint:1"
+// data "SpellAnimation" "f489d217-b699-4e8e-bf22-6ef539c5d65b,,;,,;7a343ea7-1330-428a-b0b1-9f6dc7f2a91c,,;0f872585-3c6e-4493-a0b5-5acc882b7aaf,,;f9414915-2da7-4f40-bcbd-90e956461246,,;,,;f2a62277-c87a-4ec7-b4f2-c3c37e6e30ae,,;,,;,,"
+// data "VerbalIntent" "Utility"
+// data "SpellStyleGroup" "Class"
+// data "SpellFlags" "Stealth;Invisible"
+// data "RequirementConditions" "not HasObscuredState(ObscuredState.Clear)"
+// data "RequirementEvents" "OnObscurityChanged"
+// data "MemoryCost" ""
+// data "PrepareEffect" "12adcfc2-96c1-4f52-b9cc-df7fd63cbce9"
+// data "CastEffect" "383e59eb-4db8-4ebe-9b19-5ae78387e1c2"
 
 new entry "ONE_WITH_SHADOWS"
 type "StatusData"
 data "StatusType" "INVISIBLE"
 // using "INVISIBILITY"
 using "ONE_WITH_SHADOWS"
-// One with the Shadows
+// // One with the Shadows
 // data "DisplayName" "h10b8a77dg19abg47ecgb719g3d87a8e95922;1"
-// Affected entity is invisible. It has &lt;LSTag Tooltip="Advantage"&gt;Advantage&lt;/LSTag&gt; on &lt;LSTag Tooltip="AttackRoll"&gt;Attack Rolls&lt;/LSTag&gt; and imposes &lt;LSTag Tooltip="Disadvantage"&gt;Disadvantage&lt;/LSTag&gt; on enemy Attack Rolls. &lt;br&gt;&lt;Br&gt;Invisibility ends early if the invisible entity moves, attacks, casts another spell, takes an action, or takes damage.
+// // Affected entity is invisible. It has &lt;LSTag Tooltip="Advantage"&gt;Advantage&lt;/LSTag&gt; on &lt;LSTag Tooltip="AttackRoll"&gt;Attack Rolls&lt;/LSTag&gt; and imposes &lt;LSTag Tooltip="Disadvantage"&gt;Disadvantage&lt;/LSTag&gt; on enemy Attack Rolls. &lt;br&gt;&lt;Br&gt;Invisibility ends early if the invisible entity moves, attacks, casts another spell, takes an action, or takes damage.
 // data "Description" "hb01c86c1g1965g4573gad00gd8889a725e6e;2"
+// // Entity has &lt;LSTag Tooltip="Advantage"&gt;Advantage&lt;/LSTag&gt; on &lt;LSTag Tooltip="AttackRoll"&gt;Attack Rolls&lt;/LSTag&gt; against targets who cannot see or otherwise sense its location. Entities that cannot discern the invisible entity's location have &lt;LSTag Tooltip="Disadvantage"&gt;Disadvantage&lt;/LSTag&gt; on &lt;LSTag Tooltip="AttackRoll"&gt;Attack Rolls&lt;/LSTag&gt; against it.
+data "Description" "h5a74ab78g6e2bg48ccga35bg544f21e9fb63;1"
+// // &lt;LSTag Type="Image" Info="SoftWarning"/&gt; Condition ends early if the entity takes an action, takes damage, moves, or is no longer obscured.
+data "TooltipPermanentWarnings" "16a8ec13-3d5d-454f-92f0-5d9f3c348d07"
 // data "Icon" "Action_Warlock_OneWithShadows"
 // data "StackPriority" "2"
 // data "StatusPropertyFlags" "UnavailableInActiveRoll;ExcludeFromPortraitRendering"
 // data "RemoveEvents" "OnSpellCast;OnDamage;OnEntityPickUp;OnEntityDrop;OnEntityDrag;OnMove;OnLockpickingFinished;OnDisarmingFinished"
-data "RemoveEvents" "OnSpellCast;OnAttack;OnEntityPickUp;OnEntityDrop;OnEntityDrag;OnMove"
+data "RemoveEvents" "OnSpellCast;OnAttack;OnEntityPickUp;OnEntityDrop;OnEntityDrag;OnMove;OnObscurityChanged"
 // data "RemoveConditions" "(IsStatusEvent(StatusEvent.OnSpellCast) and not HasSpellFlag(SpellFlags.Invisible)) or (IsStatusEvent(StatusEvent.OnDamage) and TotalDamageDoneGreaterThan(0)) or (not IsStatusEvent(StatusEvent.OnSpellCast) and not IsStatusEvent(StatusEvent.OnDamage)) or SpellId('Projectile_Jump') or SpellId('Projectile_Fly') or SpellId('Projectile_Fly_Spell')"
-data "RemoveConditions" "Goon_InvisibilityRemoveConditions(true)"
+data "RemoveConditions" "Goon_InvisibilityRemoveConditions(true,true)"
 data "OnRemoveFunctors" "IF(Goon_InvisibilityOnRemoveFunctors(true)):ApplyStatus(GOON_ONE_WITH_SHADOWS_SEEN,100,Target.ONE_WITH_SHADOWS.Duration,,,,,true)"
 
 new entry "GOON_ONE_WITH_SHADOWS_SEEN"
@@ -733,20 +1146,25 @@ data "StatusPropertyFlags" "UnavailableInActiveRoll;ExcludeFromPortraitRendering
 data "OnRemoveFunctors" "IF(Goon_InvisibilityOnRemoveFunctors(false)):ApplyStatus(INVISIBLE_MAGEHAND,100,Target.GOON_INVISIBLE_MAGEHAND_SEEN.Duration,,,,,true)"
 
 // ==================================== Supreme Sneak
+// TODO: Make it 5e RAW in Goon's Rogue Overhaul?
 
-// new entry "Shout_SupremeSneak"
-// type "SpellData"
-// data "SpellType" "Shout"
+new entry "Shout_SupremeSneak"
+type "SpellData"
+data "SpellType" "Shout"
 // using "Shout_OneWithShadows"
+using "Shout_SupremeSneak"
 // data "Cooldown" "OncePerShortRest"
 // data "SpellProperties" "ApplyStatus(SUPREME_SNEAK,100,10)"
 // data "Icon" "Action_SupremeSneak"
-// Supreme Sneak
+// // Supreme Sneak
 // data "DisplayName" "hcb0ed90bgb4a2g4038ga26bg54158cf992f5;2"
-// Blend into the environment so completely that you become &lt;LSTag Type="Status" Tooltip="INVISIBLE"&gt;Invisible&lt;/LSTag&gt;.
+// // Blend into the environment so completely that you become &lt;LSTag Type="Status" Tooltip="INVISIBLE"&gt;Invisible&lt;/LSTag&gt;.
 // data "Description" "hf6ffa16cg6dd7g4d6dga149g7e75234dd3d2;5"
 // data "TooltipStatusApply" "ApplyStatus(SUPREME_SNEAK,100,10)"
+// // &lt;LSTag Type="Image" Info="SoftWarning"/&gt; Invisibility ends early if you attack, cast another spell, take an action, or take damage.
 // data "TooltipPermanentWarnings" "d6bcda06-80ef-4889-98b9-43b886f77bd6"
+// // &lt;LSTag Type="Image" Info="SoftWarning"/&gt; Condition ends early if the entity attacks or casts a spell.
+data "TooltipPermanentWarnings" "3541c8b9-688f-459d-842f-5d7760b89424"
 // data "CastSound" "Action_Cast_Rogue_SupremeSneak"
 // data "UseCosts" "ActionPoint:1"
 // data "SpellAnimation" "209b5952-1675-4518-b592-fde33b287d2d,,;,,;b3993300-3efa-412f-926f-7cc67f63840d,,;ad1da0b4-02b3-44e1-b7f5-266f8c7da081,,;8076d48c-f392-4941-8f4b-355b74731430,,;,,;7a842eef-284c-4b25-bf5e-119e0725aafb,,;,,;,,"
@@ -777,22 +1195,42 @@ data "StatusPropertyFlags" "UnavailableInActiveRoll;ExcludeFromPortraitRendering
 data "OnRemoveFunctors" "IF(Goon_InvisibilityOnRemoveFunctors(false)):ApplyStatus(SUPREME_SNEAK,100,Target.GOON_SUPREME_SNEAK_SEEN.Duration,,,,,true)"
 
 // ==================================== Poltergeist - Invisible
-// Changes: Attacking poltergeists no longer removes their invisibility.
+// Bug Fix: Attacking poltergeists no longer removes their invisibility.
+// TODO: This stuff looks like a pretty wonky version of what the mod is looking to do. Deeper overhaul needed.
+
+new entry "LOW_OskarsBeloved_Poltergeists_Invisible"
+type "PassiveData"
+using "LOW_OskarsBeloved_Poltergeists_Invisible"
+// // Innate Invisibility
+// data "DisplayName" "hac2d8c2cg0c6ag42e5gbf73g82259b1f1ed9;2"
+// // &lt;LSTag Type="Status" Tooltip="LOW_POLTERGEIST_INVISIBLE"&gt;Invisible&lt;/LSTag&gt; by nature, this creature can only be seen through magical means.
+// data "Description" "h09af3cfdg0c3cg4c87g89b7ga31d14006f18;4"
+// data "Icon" "PassiveFeature_Generic_Invisibility"
+// data "Properties" "Highlighted"
+// data "StatsFunctorContext" "OnStatusRemove;OnTurn"
+// data "Conditions" "not HasStatus('WET') and not HasStatus('FAERIE_FIRE') and not HasStatus('BRANDING_SMITE') and not HasStatus('SEE_INVISIBILITY_REVEAL') and not HasStatus('LOW_POLTERGEIST_INVISIBLE') and not HasStatus('POLTERGEIST_SEEINVIS_CHECK_TRUE') and not HasStatus('SPIRIT_GUARDIANS_RADIANT')"
+data "Conditions" "not HasAnyStatus({ 'LOW_POLTERGEIST_INVISIBLE', 'GOON_LOW_POLTERGEIST_INVISIBLE_SEEN' }, {}, {})"
+// data "StatsFunctors" "ApplyStatus(LOW_POLTERGEIST_INVISIBLE, 100, -1)"
 
 new entry "LOW_POLTERGEIST_INVISIBLE"
 type "StatusData"
 data "StatusType" "INVISIBLE"
 // using "INVISIBILITY"
 using "LOW_POLTERGEIST_INVISIBLE"
-// Invisible
+// // Invisible
 // data "DisplayName" "hdcce293eg99c0g49e9g9457g42ed3ebf8229;1"
-// This invisible creature has &lt;LSTag Tooltip="Advantage"&gt;Advantage&lt;/LSTag&gt; on &lt;LSTag Tooltip="AttackRoll"&gt;attacks&lt;/LSTag&gt; and imposes &lt;LSTag Tooltip="Disadvantage"&gt;Disadvantage&lt;/LSTag&gt; on enemy attacks and can only be revealed through magical means.
+// // This invisible creature has &lt;LSTag Tooltip="Advantage"&gt;Advantage&lt;/LSTag&gt; on &lt;LSTag Tooltip="AttackRoll"&gt;attacks&lt;/LSTag&gt; and imposes &lt;LSTag Tooltip="Disadvantage"&gt;Disadvantage&lt;/LSTag&gt; on enemy attacks and can only be revealed through magical means.
 // data "Description" "h6b76ff68g4639g4730g9862g480bdb8c4548;3"
+// // Entity has &lt;LSTag Tooltip="Advantage"&gt;Advantage&lt;/LSTag&gt; on &lt;LSTag Tooltip="AttackRoll"&gt;Attack Rolls&lt;/LSTag&gt; against targets who cannot see or otherwise sense its location. Entities that cannot discern the invisible entity's location have &lt;LSTag Tooltip="Disadvantage"&gt;Disadvantage&lt;/LSTag&gt; on &lt;LSTag Tooltip="AttackRoll"&gt;Attack Rolls&lt;/LSTag&gt; against it.
+data "Description" "h5a74ab78g6e2bg48ccga35bg544f21e9fb63;1"
+// // &lt;LSTag Type="Image" Info="SoftWarning"/&gt; Condition can only be removed through magical means.
+data "TooltipPermanentWarnings" "f7728ebc-eb2d-427e-afbf-8d55c9676965"
 // data "StackPriority" "1"
 // data "StatusPropertyFlags" "UnavailableInActiveRoll;ExcludeFromPortraitRendering"
 // data "RemoveEvents" "OnAttacked"
-data "RemoveEvents" ""
+data "RemoveEvents" "OnStatusApplied"
 // data "RemoveConditions" ""
+data "RemoveConditions" "HasAnyStatus({ 'SPIRIT_GUARDIANS_RADIANT', 'SPIRIT_GUARDIANS_RADIANT_5', 'SPIRIT_GUARDIANS_RADIANT_6', 'SPIRIT_GUARDIANS_RADIANT_7', 'SPIRIT_GUARDIANS_RADIANT_8', 'SPIRIT_GUARDIANS_RADIANT_9' }, {}, {})"
 data "OnRemoveFunctors" "IF(Goon_InvisibilityOnRemoveFunctors(true)):ApplyStatus(GOON_LOW_POLTERGEIST_INVISIBLE_SEEN,100,Target.LOW_POLTERGEIST_INVISIBLE.Duration,,,,,true)"
 
 new entry "GOON_LOW_POLTERGEIST_INVISIBLE_SEEN"
@@ -804,22 +1242,31 @@ data "Boosts" "IF(not Goon_CanSeeInvisible(false)):Disadvantage(AttackTarget);IF
 // data "StatusPropertyFlags" "UnavailableInActiveRoll;ExcludeFromPortraitRendering"
 data "StatusPropertyFlags" "UnavailableInActiveRoll;ExcludeFromPortraitRendering;DisableCombatlog"
 // data "OnRemoveFunctors" "IF(Goon_InvisibilityOnRemoveFunctors(true)):ApplyStatus(LOW_POLTERGEIST_INVISIBLE_SEEN,100,Target.LOW_POLTERGEIST_INVISIBLE.Duration,,,,,true)"
+// data "RemoveEvents" "OnStatusApplied"
+data "RemoveEvents" ""
+// data "RemoveConditions" "HasAnyStatus({ 'SPIRIT_GUARDIANS_RADIANT', 'SPIRIT_GUARDIANS_RADIANT_5', 'SPIRIT_GUARDIANS_RADIANT_6', 'SPIRIT_GUARDIANS_RADIANT_7', 'SPIRIT_GUARDIANS_RADIANT_8', 'SPIRIT_GUARDIANS_RADIANT_9' }, {}, {})"
+data "RemoveConditions" ""
 data "OnRemoveFunctors" "IF(Goon_InvisibilityOnRemoveFunctors(false)):ApplyStatus(LOW_POLTERGEIST_INVISIBLE,100,Target.GOON_LOW_POLTERGEIST_INVISIBLE_SEEN.Duration,,,,,true)"
 
 // ==================================== Unseen Menace - Invisible Weapon
 // TODO: Allow disarming for creatures that can see it.
-// TODO: Check what determines advantage and all that.
+// TODO: TooltipPermanentWarnings?
 
 new entry "MAG_INVISIBLE_WEAPON"
 type "StatusData"
 data "StatusType" "INVISIBLE"
 // using "INVISIBLE"
 using "MAG_INVISIBLE_WEAPON"
-// Invisible Weapon
+// // Invisible Weapon
 // data "DisplayName" "hb703c9f4gd925g4cccg84begf68919d1dba5;2"
-// Affected entity can't be disarmed. It has &lt;LSTag Tooltip="Advantage"&gt;Advantage&lt;/LSTag&gt; on &lt;LSTag Tooltip="AttackRoll"&gt;Attack Rolls&lt;/LSTag&gt;. It scores a &lt;LSTag Tooltip="CriticalHit"&gt;Critical Hit&lt;/LSTag&gt; when rolling a [1].
+// // Affected entity can't be disarmed. It has &lt;LSTag Tooltip="Advantage"&gt;Advantage&lt;/LSTag&gt; on &lt;LSTag Tooltip="AttackRoll"&gt;Attack Rolls&lt;/LSTag&gt;. It scores a &lt;LSTag Tooltip="CriticalHit"&gt;Critical Hit&lt;/LSTag&gt; when rolling a [1].
 // data "Description" "h04f25059g18bag4b53ga70ag1cab0464d01b;4"
+// // Affected entity cannot be &lt;LSTag Type="Status" Tooltip="DISARMED"&gt;Disarmed&lt;/LSTag&gt;. It has &lt;LSTag Tooltip="Advantage"&gt;Advantage&lt;/LSTag&gt; on &lt;LSTag Tooltip="AttackRoll"&gt;Attack Rolls&lt;/LSTag&gt;. The number you need to &lt;LSTag Tooltip="AttackRoll"&gt;roll&lt;/LSTag&gt; a &lt;LSTag Tooltip="CriticalHit"&gt;Critical Hit&lt;/LSTag&gt; while attacking is reduced by 1. This effect can stack.
+data "Description" "h6823dc96g179bg4864gad56g215e2a9eb9ae;1"
 // data "DescriptionParams" "19"
+// // &lt;LSTag Type="Image" Info="SoftWarning"/&gt; Condition ends early if the entity attacks or casts a spell.
+// data "TooltipPermanentWarnings" "3541c8b9-688f-459d-842f-5d7760b89424"
+data "TooltipPermanentWarnings" ""
 // data "MaterialApplyBody" "No"
 // data "MaterialApplyArmor" "No"
 // data "StackId" "MAG_INVISIBLE_WEAPON"
@@ -830,6 +1277,40 @@ using "MAG_INVISIBLE_WEAPON"
 data "OnRemoveFunctors" "IF(Goon_InvisibilityOnRemoveFunctors(true)):ApplyStatus(GOON_MAG_INVISIBLE_WEAPON_SEEN,100,Target.MAG_INVISIBLE_WEAPON.Duration,,,,,true)"
 // data "StatusGroups" "SG_Invisible"
 // data "StatusEffect" "84be28b3-6fdf-4b62-86e2-1f3b333aab81"
+
+new entry "MAG_INVISIBLE_WEAPON_BUFF"
+type "StatusData"
+data "StatusType" "BOOST"
+using "MAG_INVISIBLE_WEAPON_BUFF"
+// // Invisible Weapon
+// data "DisplayName" "he5744361g0c0eg4db5gb776g9bb440a462b6;1"
+// // Affected entity can't be disarmed. It has &lt;LSTag Tooltip="Advantage"&gt;Advantage&lt;/LSTag&gt; on &lt;LSTag Tooltip="AttackRoll"&gt;Attack Rolls&lt;/LSTag&gt;. It scores a &lt;LSTag Tooltip="CriticalHit"&gt;Critical Hit&lt;/LSTag&gt; when rolling a [1].
+// data "Description" "h817c42a7g183eg4dfagaa6agabbceb526e04;1"
+// // Affected entity cannot be &lt;LSTag Type="Status" Tooltip="DISARMED"&gt;Disarmed&lt;/LSTag&gt;. It has &lt;LSTag Tooltip="Advantage"&gt;Advantage&lt;/LSTag&gt; on &lt;LSTag Tooltip="AttackRoll"&gt;Attack Rolls&lt;/LSTag&gt;. The number you need to &lt;LSTag Tooltip="AttackRoll"&gt;roll&lt;/LSTag&gt; a &lt;LSTag Tooltip="CriticalHit"&gt;Critical Hit&lt;/LSTag&gt; while attacking is reduced by 1. This effect can stack.
+data "Description" "h6823dc96g179bg4864gad56g215e2a9eb9ae;1"
+// data "DescriptionParams" "19"
+// data "Icon" "Status_Invisible"
+// data "StackId" "MAG_INVISIBLE_WEAPON_BUFF"
+// data "Boosts" "CannotBeDisarmed()"
+// data "StatusPropertyFlags" "IgnoreResting"
+// data "StatusEffect" "d26436d4-d019-4dfc-b2f1-da0ac195575f"
+
+new entry "MAG_INVISIBLE_WEAPON_BUFF_TECHNICAL"
+type "StatusData"
+data "StatusType" "BOOST"
+using "MAG_INVISIBLE_WEAPON_BUFF_TECHNICAL"
+// // Invisible Weapon
+// data "DisplayName" "hfdecca27g4310g4583g9a8ag664cc0d53bd5;2"
+// // Affected entity has &lt;LSTag Tooltip="Advantage"&gt;Advantage&lt;/LSTag&gt; on &lt;LSTag Tooltip="AttackRoll"&gt;Attack Rolls&lt;/LSTag&gt; and scores a &lt;LSTag Tooltip="CriticalHit"&gt;Critical Hit&lt;/LSTag&gt; on a [1].
+// data "Description" "h1dcf58d8ge0bcg4e29g81afg1edcc1f43c3b;2"
+// // Affected entity cannot be &lt;LSTag Type="Status" Tooltip="DISARMED"&gt;Disarmed&lt;/LSTag&gt;. It has &lt;LSTag Tooltip="Advantage"&gt;Advantage&lt;/LSTag&gt; on &lt;LSTag Tooltip="AttackRoll"&gt;Attack Rolls&lt;/LSTag&gt;. The number you need to &lt;LSTag Tooltip="AttackRoll"&gt;roll&lt;/LSTag&gt; a &lt;LSTag Tooltip="CriticalHit"&gt;Critical Hit&lt;/LSTag&gt; while attacking is reduced by 1. This effect can stack.
+data "Description" "h6823dc96g179bg4864gad56g215e2a9eb9ae;1"
+// data "DescriptionParams" "19"
+// data "Icon" "GenericIcon_Intent_Buff"
+// data "StackId" "MAG_INVISIBLE_WEAPON_BUFF"
+// data "StatusPropertyFlags" "DisableOverhead;DisableCombatlog;DisablePortraitIndicator;IgnoreResting;ApplyToDead"
+// data "OnApplyFunctors" "IF(not HasStatus('MAG_INVISIBLE_WEAPON_VISIBLE', GetItemInEquipmentSlot(EquipmentSlot.MeleeMainHand))):ApplyEquipmentStatus(MeleeMainHand, MAG_INVISIBLE_WEAPON_BUFF, 100, -1);IF(not HasStatus('MAG_INVISIBLE_WEAPON_VISIBLE', GetItemInEquipmentSlot(EquipmentSlot.MeleeMainHand))):ApplyStatus(MAG_INVISIBLE_WEAPON_OWNER, 100, -1)"
+// data "OnRemoveFunctors" "RemoveStatus(GetItemInEquipmentSlot(EquipmentSlot.MeleeMainHand), MAG_INVISIBLE_WEAPON_BUFF);RemoveStatus(GetItemInEquipmentSlot(EquipmentSlot.MeleeMainHand), MAG_INVISIBLE_WEAPON_VISIBLE);RemoveStatus(MAG_INVISIBLE_WEAPON_VISIBLE_OWNER);RemoveStatus(MAG_INVISIBLE_WEAPON_OWNER)"
 
 new entry "GOON_MAG_INVISIBLE_WEAPON_SEEN"
 type "StatusData"
@@ -843,6 +1324,8 @@ data "StatusPropertyFlags" "DisableCombatlog"
 data "OnRemoveFunctors" "IF(Goon_InvisibilityOnRemoveFunctors(false)):ApplyStatus(MAG_INVISIBLE_WEAPON,100,Target.GOON_MAG_INVISIBLE_WEAPON_SEEN.Duration,,,,,true)"
 
 // ==================================== Book of Druids - Circle of Dreams: Walker in Dreams ====================================
+// TODO: Last I looked it seemed like I needn't touch it, but I could have been wrong.
+// TODO: TooltipPermanentWarnings.
 
 // new entry "DREAMS_WALKER_TECHNICAL"
 // type "StatusData"
@@ -874,17 +1357,24 @@ data "OnRemoveFunctors" "IF(Goon_InvisibilityOnRemoveFunctors(false)):ApplyStatu
 // data "StatusEffect" "d26436d4-d019-4dfc-b2f1-da0ac195575f"
 
 // ==================================== Expansion - Monk: Empty Body ====================================
-// TODO: Maybe compare against Greater Invisibility further, but at least it now functions with See Invisibility.
+// TODO: Probably best if it just functions like Greater Invisibility for BG3 purposes.
+// TODO: TooltipPermanentWarnings?
 
 new entry "EMPTY_BODY"
 type "StatusData"
 data "StatusType" "INVISIBLE"
 // using "INVISIBILITY"
 using "EMPTY_BODY"
-// Empty Body
+// // Empty Body
 // data "DisplayName" "hb7e698cfg4d01g4c02g8d72g8a074414024d;1"
-// This entity is &lt;LSTag Type="Status" Tooltip="INVISIBILITY"&gt;Invisible&lt;/LSTag&gt; and &lt;LSTag Type="Status" Tooltip="RESISTANCE"&gt;Resistant&lt;/LSTag&gt; to all damage except force damage.
+// // This entity is &lt;LSTag Type="Status" Tooltip="INVISIBILITY"&gt;Invisible&lt;/LSTag&gt; and &lt;LSTag Type="Status" Tooltip="RESISTANCE"&gt;Resistant&lt;/LSTag&gt; to all damage except force damage.
 // data "Description" "h5f4df36fge60cg426agb675g86c92d44cd71;1"
+// // This entity is &lt;LSTag Type="Status" Tooltip="INVISIBILITY"&gt;Invisible&lt;/LSTag&gt; and &lt;LSTag Type="Status" Tooltip="RESISTANCE"&gt;Resistant&lt;/LSTag&gt; to all damage except[1].
+data "Description" "h80012798g21f6g41f2gbf21ga0ffdf50d099;1"
+data "DescriptionParams" "DealDamage(,Force)"
+// // &lt;LSTag Type="Image" Info="SoftWarning"/&gt; Condition ends early if the entity attacks or casts a spell.
+// data "TooltipPermanentWarnings" "3541c8b9-688f-459d-842f-5d7760b89424"
+data "TooltipPermanentWarnings" ""
 // data "Boosts" "IgnoreLeaveAttackRange; Invisibility(); Advantage(AttackRoll); DetectDisturbancesBlock(true);Resistance(Bludgeoning,Resistant);Resistance(Slashing,Resistant);Resistance(Piercing,Resistant);Resistance(Fire,Resistant);Resistance(Cold,Resistant);Resistance(Acid,Resistant);Resistance(Poison,Resistant);Resistance(Thunder,Resistant);Resistance(Lightning,Resistant);Resistance(Radiant,Resistant);Resistance(Necrotic,Resistant);Resistance(Psychic,Resistant)"
 data "Boosts" "IgnoreLeaveAttackRange();Invisibility();IF(not Goon_CanSeeInvisible(false)):Disadvantage(AttackTarget);IF(not Goon_CanSeeInvisible(true)):Advantage(AttackRoll);DetectDisturbancesBlock(true); Resistance(Bludgeoning,Resistant);Resistance(Slashing,Resistant);Resistance(Piercing,Resistant);Resistance(Fire,Resistant);Resistance(Cold,Resistant);Resistance(Acid,Resistant);Resistance(Poison,Resistant);Resistance(Thunder,Resistant);Resistance(Lightning,Resistant);Resistance(Radiant,Resistant);Resistance(Necrotic,Resistant);Resistance(Psychic,Resistant)"
 // data "RemoveEvents" ""

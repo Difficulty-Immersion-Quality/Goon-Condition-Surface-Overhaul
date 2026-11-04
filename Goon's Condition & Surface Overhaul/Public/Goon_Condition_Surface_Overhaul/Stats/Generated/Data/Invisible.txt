@@ -500,17 +500,32 @@ data "OnRemoveFunctors" "IF(Goon_InvisibilityOnRemoveFunctors(false,true)):Apply
 // TODO: OnDamaged removal passive as there's no status event for it. It would count as external removal and needs testing, so I'll leave it just for the second.
 // TODO: ShadowyRetreat's conditions line almost killed me just looking at the mfer.
 
-// new entry "ShadowyRetreat"
-// type "PassiveData"
+new entry "ShadowyRetreat"
+type "PassiveData"
+using "ShadowyRetreat"
 // // Shadowblend
 // data "DisplayName" "h5fca4903g537dg488cg87b1g63a762a6d64f;2"
 // // While Lightly or Heavily Obscured, this creature gains the ability to blend with shadows and become &lt;LSTag Type="Status" Tooltip="INVISIBILITY"&gt;Invisible&lt;/LSTag&gt;.
-// data "Description" "hea75adfagec2eg4985ga1c1g0b3acf1201d6;4"
 // data "Icon" "PassiveFeature_Generic_Invisibility"
 // data "Properties" "Highlighted"
 // data "StatsFunctorContext" "OnMovedDistance;OnObscurityChanged"
 // data "Conditions" "(((context.HasContextFlag(StatsFunctorContext.OnMovedDistance)) and (not HasObscuredState(ObscuredState.Clear,context.Source) or HasObscuredState(ObscuredState.HeavilyObscured,context.Source) or HasObscuredState(ObscuredState.LightlyObscured,context.Source)) and not HasStatus('SHADOWBLEND', context.Source) and Combat(context.Source)) or (context.HasContextFlag(StatsFunctorContext.OnObscurityChanged) and (not HasObscuredState(ObscuredState.Clear) or HasObscuredState(ObscuredState.HeavilyObscured) or HasObscuredState(ObscuredState.LightlyObscured)) and not HasStatus('SHADOWBLEND') and Combat())) and not HasStatus('SEE_INVISIBILITY_REVEAL') and not HasStatus('FAERIE_FIRE') and not HasStatus('BRANDING_SMITE')"
+data "Conditions" "Goon_ShadowblendPassiveCanApply()"
 // data "StatsFunctors" "IF(context.HasContextFlag(StatsFunctorContext.OnMovedDistance)):ApplyStatus(SELF,SHADOWBLEND,100,-1);IF(context.HasContextFlag(StatsFunctorContext.OnMovedDistance)):ApplyStatus(SELF,SHADOWBLEND_REMOVE_HELPER,100,-1);IF(context.HasContextFlag(StatsFunctorContext.OnObscurityChanged)):ApplyStatus(SHADOWBLEND,100,-1);IF(context.HasContextFlag(StatsFunctorContext.OnObscurityChanged)):ApplyStatus(SHADOWBLEND_REMOVE_HELPER,100,-1);CreateExplosion(Projectile_Shadowblend_Effect);"
+data "StatsFunctors" "ApplyStatus(SELF,SHADOWBLEND,100,-1);IF(not HasStatus('SHADOWBLEND_REMOVE_HELPER',context.Source)):ApplyStatus(SELF,SHADOWBLEND_REMOVE_HELPER,100,-1);CreateExplosion(Projectile_Shadowblend_Effect)"
+
+new entry "SHADOWBLEND_REMOVE_HELPER"
+type "StatusData"
+data "StatusType" "BOOST"
+using "SHADOWBLEND_REMOVE_HELPER"
+// // %%% EMPTY
+// data "DisplayName" "h3ce8f2e0g2b45g43b2g8001ga5409e9c452d;3"
+// data "StackId" "SHADOWBLEND_REMOVE_HELPER"
+// data "RemoveConditions" "not HasStatus('SHADOWBLEND',context.Source)"
+data "RemoveConditions" "not HasAnyStatus({ 'SHADOWBLEND', 'GOON_SHADOWBLEND_SEEN' }, {}, {}, context.Source)"
+// data "RemoveEvents" "OnStatusRemoved"
+// data "StatusPropertyFlags" "DisableOverhead;DisableCombatlog;DisablePortraitIndicator"
+// data "OnRemoveFunctors" "CreateExplosion(Projectile_Shadowblend_Effect_End)"
 
 // Unused.
 new entry "Shout_ShadowBlend"

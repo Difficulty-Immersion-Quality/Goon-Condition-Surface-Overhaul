@@ -9,7 +9,7 @@
 					<attribute id="Localized" type="bool" value="False" />
 					<attribute id="Name" type="LSString" value="Icons_SeeInvisRework" />
 					<attribute id="SRGB" type="bool" value="True" />
-					<attribute id="SourceFile" type="LSString" value="Public/SeeInvisRework/Assets/Textures/Icons/Icons_SeeInvisRework.dds" />
+					<attribute id="SourceFile" type="LSString" value="Public/Goon_Condition_Surface_Overhaul/Assets/Textures/Icons/Icons_SeeInvisRework.dds" />
 					<attribute id="Streaming" type="bool" value="True" />
 					<attribute id="Template" type="FixedString" value="Icons_Items" />
 					<attribute id="Type" type="int32" value="0" />

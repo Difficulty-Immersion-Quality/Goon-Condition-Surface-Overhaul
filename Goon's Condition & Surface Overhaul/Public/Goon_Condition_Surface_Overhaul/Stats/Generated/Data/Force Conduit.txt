@@ -9,10 +9,10 @@ using "MAG_ZOC_FORCE_CONDUIT"
 // data "DisplayName" "hbd400726g1814g4a03ga7f7gc9494a5e5c25;2"
 // // Bludgeoning, Piercing, and Slashing damage against the affected entity is reduced by [1] per turn remaining. <br><br>If the entity takes damage while it has 5 or more turns remaining, it deals [2] in a [3] radius.
 // data "Description" "h891927a2gd210g44e1ga5d9g7ac3ff823bbd;7"
-// // Bludgeoning, Piercing, and Slashing damage against the affected entity is reduced by [4] per turn remaining. <br><br>If the entity takes damage while it has 5 or more turns remaining, it deals [5] in a [6] radius.
-data "Description" "h730c0859g21fdg4b83g89acgbc42b98b2d47;1"
+// // [1],[2],and[3] against the affected entity is reduced by [4] per turn remaining.&lt;br&gt;&lt;br&gt;If the entity takes damage while it has [5] or more rounds remaining, it deals [6] in a [7] radius.
+data "Description" "h1faab941gf79dg4100gb456gbe3dbb2050da;1"
 // data "DescriptionParams" "1;DealDamage(1d4,Force);Distance(6)"
-data "DescriptionParams" "DealDamage(,Bludgeoning);DealDamage(,Piercing);DealDamage(,Slashing);1;DealDamage(1d4,Force);Distance(6)"
+data "DescriptionParams" "DealDamage(,Bludgeoning);DealDamage(,Piercing);DealDamage(,Slashing);1;5;DealDamage(1d4,Force);Distance(6)"
 // data "Icon" "statIcons_ForceConduit"
 // data "SoundLoop" "Misc_Status_ForceConduit_MO"
 // data "SoundStop" "Misc_Status_ForceConduit_MO_Stop"
